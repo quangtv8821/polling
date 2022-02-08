@@ -5,8 +5,8 @@
         active-class="pink--text"
         multiple
       >
-        <template v-for="(item, index) in items">
-          <v-list-item :key="item.title">
+        <template v-for="(item, index) in items" class="mt-5">
+          <v-list-item :key="item.title" >
             <template v-slot:default="{ active }">
               <v-list-item-content>
                 <v-list-item-title v-text="item.title"></v-list-item-title>
@@ -64,6 +64,30 @@
           headline: 'Summer BBQ',
           subtitle: `Wish I could come, but I'm out of town this weekend.`,
           title: 'me, Scrott, Jennifer',
+        },
+        {
+          action: '6 hr',
+          headline: 'Oui oui',
+          subtitle: 'Do you have Paris recommendations? Have you ever been?',
+          title: 'Sandra Adams',
+        },
+        {
+          action: '6 hr',
+          headline: 'Oui oui',
+          subtitle: 'Do you have Paris recommendations? Have you ever been?',
+          title: 'Sandra Adams',
+        },
+        {
+          action: '6 hr',
+          headline: 'Oui oui',
+          subtitle: 'Do you have Paris recommendations? Have you ever been?',
+          title: 'Sandra Adams',
+        },
+        {
+          action: '6 hr',
+          headline: 'Oui oui',
+          subtitle: 'Do you have Paris recommendations? Have you ever been?',
+          title: 'Sandra Adams',
         },
         {
           action: '6 hr',

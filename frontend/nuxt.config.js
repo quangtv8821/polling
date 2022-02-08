@@ -3,8 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - frontend',
-    title: 'frontend',
+    title: 'polling',
     htmlAttrs: {
       lang: 'en'
     },
@@ -50,7 +49,7 @@ export default {
           secondary: '#b0bec5',
           accent: '#8c9eff',
           error: '#b71c1c',
-          main: "#ED4C67"
+          main: "#34495e"
         },
       },
     }
