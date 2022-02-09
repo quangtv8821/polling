@@ -4,7 +4,7 @@
         multiple
       >
         <template v-for="(item, index) in items" class="mt-5">
-          <v-list-item :key="item.title" @click="changePage">
+          <v-list-item :key="'key' + index" @click="changePage">
             <template>
               <v-list-item-content>
                 <v-list-item-title v-text="item.title"></v-list-item-title>
