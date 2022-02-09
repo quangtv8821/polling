@@ -11,11 +11,6 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-//use route
-app.use('/auth', authRoute)
-app.get('/', (req, res) => {
-    res.send("hi")
-})
 //add mysql
 const connection = mysql.createConnection({
     host: process.env.HOST,
@@ -30,6 +25,19 @@ connection.connect( (error) => {
     } else {
         console.log("connected");
     }
+})
+
+//use route
+app.use('/auth', authRoute)
+app.get('/', (req, res) => {
+    const username = request.body.username;
+	const password = request.body.password;
+
+    connection.query("SELECT * FROM user", (error, results, fields) => {
+            if(error) console.log(error);
+            res.json(results)
+        }
+    )
 })
 
 const port = process.env.PORT || 5500
