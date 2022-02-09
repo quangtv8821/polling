@@ -26,8 +26,14 @@
         v-for="item in items"
         :key="item"
       >
-        <v-card>
-          <ListVote />
+        <v-card v-if="item === 'Ended'">
+          <ListEndedVote />
+        </v-card>
+        <v-card v-if="item === 'Recent'">
+          <ListRecentVote />
+        </v-card>
+        <v-card v-if="item === 'Upcoming'">
+          <ListUpcomingVote />
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -39,7 +45,7 @@
       return {
         tab: null,
         items: [
-          'Đã qua', 'Đang diễn ra', 'Sắp tới'
+          'Ended', 'Recent', 'Upcoming'
         ]
       }
     },
