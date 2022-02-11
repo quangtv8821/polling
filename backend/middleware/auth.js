@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-module.exports = {
-    auth: (req, res, next) => {
+const authJwt = () => {
+    return (req, res, next) => {
         try {
             const token = req.cookies //set cookie o frontend
             console.log(token);
@@ -10,7 +10,7 @@ module.exports = {
                 token,
                 process.env.SECRET,
             );
-
+    
             if(verify) {
                 next()
             }
@@ -22,4 +22,18 @@ module.exports = {
             })
         }
     }
+}
+
+const authCreatePoll = () => {
+    return (req, res, next) => {
+        if(!req.body.title || !req.body.total_vote || !req.body.start || !req.body.end || !req.body.vote) {
+            return res.send("Missing information")
+        }
+        next()
+    }
+}
+
+module.exports = {
+    authJwt,
+    authCreatePoll
 }

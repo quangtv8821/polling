@@ -3,9 +3,11 @@ const cors = require('cors')
 
 const app = express()
 
-const jwtMiddleWare = require('./middleware/authJwt')
+const authMiddleWare = require('./middleware/auth')
+const authRoleMiddleWare = require('./middleware/authRole')
 
 //require router
+const indexRoute = require('./routes/index')
 const loginRoute = require('./routes/login')
 const registerRoute = require('./routes/register')
 const createPollRoute = require('./routes/createPoll')
@@ -18,11 +20,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //use route
+app.use('/', indexRoute)
 app.use('/login',loginRoute)
-app.use('/register', jwtMiddleWare.auth, registerRoute)
-app.use('/create-poll', createPollRoute)
+app.use('/register', registerRoute)
+app.use('/create-poll', authRoleMiddleWare.authRole("admin"), authMiddleWare.authCreatePoll(),createPollRoute)
 app.use('/increase-vote', increaseVoter)
-app.use('./delete-poll', deletePollRoute)
+app.use('/delete-poll', authRoleMiddleWare.authRole("admin"), deletePollRoute)
 
 const port = process.env.PORT || 5500
 

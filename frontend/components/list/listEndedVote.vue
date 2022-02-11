@@ -38,32 +38,32 @@
     data: () => ({
       items: [
         {
-          headline: 'Winner: Quang',
+          headline: 'Most voted: Quang',
           subtitle: `Voted: 20`,
           title: 'Title vote',
         },
         {
-          headline: 'Winner: Quang',
+          headline: 'Most voted: Quang',
           subtitle: `Voted: 20`,
           title: 'Title vote',
         },
         {
-          headline: 'Winner: Quang',
+          headline: 'Most voted: Quang',
           subtitle: `Voted: 20`,
           title: 'Title vote',
         },
         {
-          headline: 'Winner: Quang',
+          headline: 'Most voted: Quang',
           subtitle: `Voted: 20`,
           title: 'Title vote',
         },
         {
-          headline: 'Winner: Quang',
+          headline: 'Most voted: Quang',
           subtitle: `Voted: 20`,
           title: 'Title vote',
         },
         {
-          headline: 'Winner: Quang',
+          headline: 'Most voted: Quang',
           subtitle: `Voted: 20`,
           title: 'Title vote',
         },

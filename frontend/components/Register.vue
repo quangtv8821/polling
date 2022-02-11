@@ -8,14 +8,13 @@
             class="pa-8"
             width="400"
         >
-            <v-card-title class="justify-center">LOGIN</v-card-title>
+            <v-card-title class="justify-center">Register</v-card-title>
 
             <v-form
                 ref="form"
                 lazy-validation
             >
                 <v-text-field
-                    v-model="user.email"
                     :counter="30"
                     label="E-mail"
                     outlined
@@ -32,23 +31,21 @@
                     :rules="passwordRules"
                 ></v-text-field>
 
+                <v-text-field
+                    v-model="user.passwordConfirm"
+                    type="password"
+                    label="PasswordConfirm"
+                    outlined
+                    required
+                    :rules="passwordRules"
+                ></v-text-field>
+
                 <v-btn
                     color="main"
                     class="mr-4 white--text"
                     width="100%"
                     height="50"
                     @click="checkForm"
-                >
-                LOGIN
-                </v-btn>
-
-                <v-btn
-                    color="white"
-                    class="mr-4 red--text mt-4"
-                    width="100%"
-                    height="25"
-                    outlined
-                    href="http://localhost:3000/register"
                 >
                 Register
                 </v-btn>
@@ -61,9 +58,10 @@
 export default {
     data() {
         return {
-            user: {
+            user : {
                 email: null,
-                password: null
+                password: null,
+                passwordConfirm: null
             },
             emailRules: [
                 v => !!v || 'E-mail is required',
@@ -71,40 +69,23 @@ export default {
             ],
             passwordRules: [
                 v => !!v || 'Password is required',
-            ]
+            ],
         }
     },
     methods: {
         checkForm() {
             this.$refs.form.validate()
-            this.getApiLogin(this.user.email, this.user.password)
+            if(this.user.password != this.user.passwordConfirm) {
+                alert("Password must be the same")
+                return
+            } 
+            window.location.href="http://localhost:3000/login"
         },
 
         validEmail(email) {
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         },
-        async getApiLogin(email, password) {
-            const user = {
-                email,
-                password
-            }
-
-            this.$axios.post(
-                'http://localhost:5500/login',
-                user
-            )
-            .then(res => {
-                console.log(res.data);
-                if(res.data.message === "logged in") {
-                    window.location.href="http://localhost:3000/"
-                    localStorage.setItem('user_token', res.data.token);
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        }
     }
 }
 </script>

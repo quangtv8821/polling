@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
     const email = req.body.email;
 	const password = req.body.password;
 
-    const query = `SELECT * FROM user WHERE email = ${connection.escape(email)} AND password = ${connection.escape(password)}`
+    const query = `SELECT * FROM user WHERE email = ${connection.escape(email)} `
 
     connection.query(query, (error, result, fields) => {
         if(error) {
@@ -26,56 +26,32 @@ router.post('/', (req, res) => {
             })
         }
 
-        console.log(result);
+        console.log(typeof password);
+        bcrypt.compare(
+            password, 
+            result[0]['password'],
+            (error, results) =>{
+                if(error) {
+                    return res.send({
+                        message: "Wrong user information, please check again!"
+                    })
+                }
 
-        if(result.length > 0) {
-            const token = jwt.sign({id: result[0].id}, process.env.SECRET, {expiresIn: '15m'})
+                //console.log(results);//results return false
+                //console.log(result[0]['password'].length);//length return 60 -> will return false
 
-            res.cookie("token", token)
-
-            return res.json({
-                message: "logged in",
-                token: token
+                if(results) {
+                    const token = jwt.sign({id: result[0].id}, process.env.SECRET, {expiresIn: '15m'})
+                    return res.json({
+                        message: "logged in",
+                        role: result[0]['role'],
+                        token: token
+                    })
+                }
+                return res.send({
+                    message: "Wrong user information, please check again!"
+                })
             })
-        }
-
-        // bcrypt.compare(
-        //     password, 
-        //     result[0]['password'],
-        //     (error, results) =>{
-        //         if(error) {
-        //             return res.send({
-        //                 message: "Wrong user information, please check again!"
-        //             })
-        //         }
-
-        //         console.log(results);//results return false
-        //         console.log(result[0]['password']);
-
-        //         if(results) {
-        //             const token = jwt.sign({id: result[0].id}, process.env.SECRET, {expiresIn: '15m'})
-        
-        //             return res.json({
-        //                 message: "logged in",
-        //                 token: token
-        //             })
-        //         }
-        //         return res.send({
-        //             message: "Wrong user information, please check again!"
-        //         })
-        //     })
-        }
-    )
-})
-
-router.post('/post', (req, res) => {
-    bcrypt.compare(
-        req.body.password,
-        '$2a$10$hEg6x57woSPKSpROt.EStON',
-        (err, result) => {
-            console.log(result)
-
-            res.send(result)
         }
     )
 })

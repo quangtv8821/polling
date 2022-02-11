@@ -17,9 +17,7 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
 
-      <v-btn icon color="red" @click="redirectLogin">
-        <v-icon>mdi-logout</v-icon>
-      </v-btn>
+      <Logout />
     </v-toolbar>
   </v-card>
 </template>
@@ -28,13 +26,10 @@
 export default {
   methods: {
     redirectCreatVote() {
-      window.location.href = "http://localhost:3000/create_vote"
+      window.location.href = "http://localhost:3000/create-vote"
     },
     redirectHome() {
       window.location.href = "http://localhost:3000/"
-    },
-    redirectLogin() {
-      window.location.href = "http://localhost:3000/login"
     }
   }
 }

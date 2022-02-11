@@ -28,13 +28,16 @@
                 <v-row>
                     <v-col>
                         <v-text-field
+                            v-model="poll.total"
                             label="Maximum vote"
                             required
                             class="pt-2 pb-2"
-                            clearable
                             height="30"
                             type="number"
                             :rules="numberRules"
+                            min="1"
+                            max="4"
+                            readonly
                         ></v-text-field>
                     </v-col>
                     <v-col>
@@ -62,7 +65,7 @@
                 </v-row>
 
                 <v-row
-                    v-for="(item, index) in textField"
+                    v-for="(item, index) in poll.vote"
                     :key="index"
                 >
                     <v-col
@@ -71,7 +74,7 @@
                         md="10"
                     >
                         <v-text-field
-                            v-model="textField.choice"
+                            v-model="poll.vote.choice"
                             label="Choice"
                             required
                             class="pt-2 pb-2"
@@ -123,11 +126,14 @@
 export default {
     data() {
         return {
-            textField: [
-                {
-                    choice: ""
-                }
-            ],
+            poll : {
+                total: 1,
+                vote: [
+                    {
+                        choice: ""
+                    }
+                ],
+            },
             titleRules: [
                 v => !!v || 'Title is required'
             ],
@@ -147,14 +153,20 @@ export default {
     },
     methods: {
         addChoice(index) {
-            if(this.textField.length == 4) {
+            if(this.poll.vote.length == 4) {
                 alert("You can't add more choice")
                 return
             }
-            this.textField.push({choice: ""})
+            this.poll.total++
+            this.poll.vote.push({choice: ""})
         },
         removeChoice(index) {
-            this.textField.splice(index, 1)
+            if(this.poll.vote.length == 1) {
+                alert("You must have at least 1 choice")
+                return
+            }
+            this.poll.total--
+            this.poll.vote.splice(index, 1)
         },
         submitVote() {
             this.$refs.form.validate()
