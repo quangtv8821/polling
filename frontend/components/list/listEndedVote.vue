@@ -13,11 +13,11 @@
                   class="text--primary"
                   v-text="item.headline"
                 ></v-list-item-subtitle>
-
+<!--headline:  most vote -->
               </v-list-item-content>
 
               <v-list-item-action>
-                <v-list-item-action-text v-text="item.subtitle"></v-list-item-action-text>
+                <v-list-item-action-text v-text="`Total vote: ` + item.total_vote"></v-list-item-action-text>
                 <v-list-item-action-text v-text="item.end"></v-list-item-action-text>
 
               </v-list-item-action>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     data: () => ({
       items: [
@@ -42,32 +43,22 @@
           subtitle: `Voted: 20`,
           title: 'Title vote',
         },
-        {
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-        {
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-        {
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-        {
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-        {
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
       ],
-    })
+    }),
+    mounted () {
+      this.getItems()
+    },
+    methods: {
+      getItems() {
+        axios.get(`http://localhost:5500/ended-vote`)
+        .then(respone => {
+          console.log(respone.data);
+          this.items = respone.data
+        })
+        .catch(error => {
+          console.log(error);
+        })
+      }
+    }
   }
 </script>

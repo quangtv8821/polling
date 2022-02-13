@@ -2,7 +2,8 @@ import axios from "axios";
 
 //state
 export const state = () => ({
-    login: []
+    login: [],
+    poll: []
 })
 
 //getters
