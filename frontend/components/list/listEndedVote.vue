@@ -3,7 +3,7 @@
       <v-list-item-group
         multiple
       >
-        <template v-for="(item, index) in items" class="mt-5">
+        <template v-for="(item, index) in polls" class="mt-5">
           <v-list-item :key="'key' + index">
             <template>
               <v-list-item-content>
@@ -35,30 +35,23 @@
 
 <script>
   import axios from 'axios'
+  import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
   export default {
     data: () => ({
-      items: [
-        {
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-      ],
+      polls: [],
     }),
     mounted () {
-      this.getItems()
+      console.log(this.$store.state.polls)
+      this.$store.dispatch("addPolls")
+      this.getData()
     },
     methods: {
-      getItems() {
+      async getData() {
         axios.get(`http://localhost:5500/ended-vote`)
-        .then(respone => {
-          console.log(respone.data);
-          this.items = respone.data
-        })
-        .catch(error => {
-          console.log(error);
+        .then(res => {
+            console.log(res.data);
         })
       }
-    }
+    },
   }
 </script>

@@ -21,6 +21,20 @@ router.get('/ended-vote', (req, res) => {
                     message: "There are no ended vote"
                 })
             }
+
+            for(let i = 0; i < result.length; i++) {
+                connection.query(
+                    `SELECT * FROM vote WHERE total = (SELECT MAX(total) FROM vote WHERE id_poll = '${result[i].id}') and id_poll = '${result[i].id}'`,
+                    (sError, sResult) => {
+                        if(sError) {
+                            console.log(sError);
+                        }
+                        result[i].most_vote = sResult[i].title
+                        console.log(result)
+                    }
+                )
+            }
+
             return res.json(result)
         }
     )

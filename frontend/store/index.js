@@ -1,9 +1,7 @@
 import axios from "axios";
-
 //state
 export const state = () => ({
-    login: [],
-    poll: []
+    polls: []
 })
 
 //getters
@@ -13,18 +11,18 @@ export const getters = () => ({
 
 //actions
 export const actions = () => ({
-    //get user login thourgh api
-    
-    // axios.post('http://localhost:5500/login')
-    // .then(res => {
-    //     console.log(res);
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // })
+    getPolls({ commit }) {
+        console.log(state.polls)
+        axios.get(`http://localhost:5500/ended-vote`)
+        .then(response => {
+            commit('addPolls', response.data)
+        })
+    }
 })
 
 //mutations
 export const mutations = () => ({
-
+    addPolls(state, polls) {
+        state.polls = polls
+    }
 })

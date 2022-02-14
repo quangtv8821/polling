@@ -11,8 +11,9 @@ const indexRoute = require('./routes/index')
 const loginRoute = require('./routes/login')
 const registerRoute = require('./routes/register')
 const createPollRoute = require('./routes/createPoll')
-const increaseVoter = require('./routes/increaseVote')
+const increaseVoteRoute = require('./routes/increaseVote')
 const deletePollRoute = require('./routes/deletePoll')
+const getVoteRoute = require('./routes/getVote')
 
 require('dotenv').config()
 app.use(cors())
@@ -24,8 +25,9 @@ app.use('/', indexRoute)
 app.use('/login',loginRoute)
 app.use('/register', registerRoute)
 app.use('/create-poll', authRoleMiddleWare.authRole("admin"), authMiddleWare.authCreatePoll(),createPollRoute)
-app.use('/increase-vote', increaseVoter)
+app.use('/increase-vote', increaseVoteRoute)
 app.use('/delete-poll', authRoleMiddleWare.authRole("admin"), deletePollRoute)
+app.use('/get-vote', getVoteRoute)
 
 const port = process.env.PORT || 5500
 
