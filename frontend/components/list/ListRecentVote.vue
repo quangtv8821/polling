@@ -3,18 +3,18 @@
       <v-list-item-group
         multiple
       >
-        <template v-for="(item, index) in items" class="mt-5">
-          <v-list-item :key="'key' + index" @click="changePage">
+        <template class="mt-5">
+          <v-list-item  v-for="item in polls"  :key="item.id" @click="changePage(item)">
             <template>
               <v-list-item-content>
                 <v-list-item-title v-text="item.title"></v-list-item-title>
 
                 <v-list-item-subtitle
                   class="text--primary"
-                  v-text="item.headline"
+                  v-text="`Most voted: ` + item.most_vote"
                 ></v-list-item-subtitle>
 
-                <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+                <v-list-item-subtitle v-text="`Total vote:` + item.total_vote"></v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-action>
@@ -24,68 +24,26 @@
               </v-list-item-action>
             </template>
           </v-list-item>
-
-          <v-divider
-            v-if="index < items.length - 1"
-            :key="index"
-          ></v-divider>
         </template>
       </v-list-item-group>
     </v-list>
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      items: [
-        {
-          start: '8:00 PM',
-          end: "10:00 PM",
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-        {
-          start: '8:00 PM',
-          end: "10:00 PM",
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-        {
-          start: '8:00 PM',
-          end: "10:00 PM",
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-        {
-          start: '8:00 PM',
-          end: "10:00 PM",
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-        {
-          start: '8:00 PM',
-          end: "10:00 PM",
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-        {
-          start: '8:00 PM',
-          end: "10:00 PM",
-          headline: 'Most voted: Quang',
-          subtitle: `Voted: 20`,
-          title: 'Title vote',
-        },
-      ],
-    }),
-    methods: {
-        changePage() {
-            window.location.href = "http://localhost:3000/vote_content"
-        }
+export default {
+  computed: {
+    polls() {
+      return this.$store.state.list.recentPoll.polls
     }
+  },
+  mounted () {
+    this.$store.dispatch('list/recentPoll/getPolls')
+  },
+  methods: {
+    changePage(item) {
+      console.log(item.id)
+      window.location.href = `http://localhost:3000/vote-content?id=${item.id}`
+    },
   }
+}
 </script>

@@ -14,20 +14,20 @@ router.post('/', (req, res) =>{
                     })
                }
 
-               connection.query(
-                    `SELECT total FROM vote WHERE id = '${voteId}'`,
-                    (error, result) => {
-                         if(error) {
-                              return res.send({
-                                   messsage: error
-                              })
-                         }
-
-                         return res.json({
-                              result: result
+          connection.query(
+               `SELECT total FROM vote WHERE id = '${voteId}'`,
+               (error, result) => {
+                    if(error) {
+                         return res.send({
+                              messsage: error
                          })
                     }
-               )       
+
+                    return res.json({
+                         result: result
+                    })
+               }
+          )       
      })
 })
 
