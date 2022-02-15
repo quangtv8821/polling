@@ -7,7 +7,7 @@ const connection = require('../database/database')
 //status = 1 -> recent, 2-> ended, 3 -> upcoming
 
 //get ended vote
-router.get('/ended-vote', (req, res) => {
+router.get('/ended-poll', (req, res) => {
     connection.query(
         `SELECT * FROM poll WHERE status = '2'`,
         (error, result) => {
@@ -22,26 +22,26 @@ router.get('/ended-vote', (req, res) => {
                 })
             }
 
-            for(let i = 0; i < result.length; i++) {
-                connection.query(
-                    `SELECT * FROM vote WHERE total = (SELECT MAX(total) FROM vote WHERE id_poll = '${result[i].id}') and id_poll = '${result[i].id}'`,
-                    (sError, sResult) => {
-                        if(sError) {
-                            console.log(sError);
-                        }
-                        result[i].most_vote = sResult[i].title
-                        console.log(result)
-                    }
-                )
-            }
 
+            console.log(result)
             return res.json(result)
         }
     )
 })
-
+router.get('/max', (req, res) => {
+    const id = req.body.id
+    connection.query(
+        `SELECT * FROM vote WHERE total = (SELECT MAX(total) FROM vote WHERE id_poll = '${id}') and id_poll = '${id}'`,
+        (error, result) => {
+            if(error) {
+                console.log(error)
+            }
+            return res.json(result)
+        }
+    )
+})
 //get recent vote
-router.get('/recent-vote', (req, res) => {
+router.get('/recent-poll', (req, res) => {
     connection.query(
         `SELECT * FROM poll WHERE status = '1'`,
         (error, result) => {
@@ -61,7 +61,7 @@ router.get('/recent-vote', (req, res) => {
 })
 
 //get upcoming vote
-router.get('/upcoming-vote', (req, res) => {
+router.get('/upcoming-poll', (req, res) => {
     connection.query(
         `SELECT * FROM poll WHERE status = '3'`,
         (error, result) => {

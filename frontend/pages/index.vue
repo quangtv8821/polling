@@ -5,7 +5,6 @@
     <v-container class="mx-auto pt-8 pb-8">
       <Tab />
     </v-container>
-    <Pagination class="mx-auto pb-8"/>
     <Footer />
   </v-app>
 </template>

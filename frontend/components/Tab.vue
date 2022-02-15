@@ -27,13 +27,13 @@
         :key="item"
       >
         <v-card v-if="item === 'Ended'">
-          <ListEndedVote />
+          <ListEndedPoll />
         </v-card>
         <v-card v-if="item === 'Recent'">
-          <ListRecentVote />
+          <ListRecentPoll />
         </v-card>
         <v-card v-if="item === 'Upcoming'">
-          <ListUpcomingVote />
+          <ListUpcomingPoll />
         </v-card>
       </v-tab-item>
     </v-tabs-items>

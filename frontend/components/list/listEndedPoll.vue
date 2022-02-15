@@ -34,7 +34,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$store.state.list.endedPoll.polls)
     this.$store.dispatch('list/endedPoll/getPolls')
   },
   methods: {
