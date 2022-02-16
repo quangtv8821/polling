@@ -34,7 +34,7 @@
 
                 <v-btn
                     color="main"
-                    class="mr-4 white--text"
+                    class="mr-4 white--text mb-4"
                     width="100%"
                     height="50"
                     @click="checkForm"
@@ -42,16 +42,16 @@
                 LOGIN
                 </v-btn>
 
-                <v-btn
+                <NuxtLink
                     color="white"
-                    class="mr-4 red--text mt-4"
+                    class="mr-4 red--text"
                     width="100%"
                     height="25"
                     outlined
-                    href="http://localhost:3000/register"
+                    to="/register"
                 >
                 Register
-                </v-btn>
+                </NuxtLink>
             </v-form>
         </v-card>
     </v-container>
@@ -77,33 +77,12 @@ export default {
     methods: {
         checkForm() {
             this.$refs.form.validate()
-            this.getApiLogin(this.user.email, this.user.password)
+            this.$store.dispatch('user/login', this.user)
+            console.log(this.$store.state.user.user);
         },
-
         validEmail(email) {
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
-        },
-        async getApiLogin(email, password) {
-            const user = {
-                email,
-                password
-            }
-
-            this.$axios.post(
-                'http://localhost:5500/login',
-                user
-            )
-            .then(res => {
-                console.log(res.data);
-                if(res.data.message === "logged in") {
-                    window.location.href="http://localhost:3000/"
-                    localStorage.setItem('user_token', res.data.token);
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
         }
     }
 }

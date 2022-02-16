@@ -15,6 +15,7 @@
                 lazy-validation
             >
                 <v-text-field
+                    v-model="user.email"
                     :counter="30"
                     label="E-mail"
                     outlined
@@ -78,14 +79,13 @@ export default {
             if(this.user.password != this.user.passwordConfirm) {
                 alert("Password must be the same")
                 return
-            } 
-            window.location.href="http://localhost:3000/login"
+            }
+            this.$store.dispatch('user/register', this.user)
         },
-
         validEmail(email) {
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
-        },
+        }
     }
 }
 </script>

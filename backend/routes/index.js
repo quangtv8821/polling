@@ -1,7 +1,6 @@
 const express = require('express')
-
 const router = express.Router()
-
+const date = require('date-and-time')
 const connection = require('../database/database')
 
 //status = 1 -> recent, 2-> ended, 3 -> upcoming
@@ -21,20 +20,9 @@ router.get('/ended-poll', (req, res) => {
                     message: "There are no ended vote"
                 })
             }
-
-
-            console.log(result)
-            return res.json(result)
-        }
-    )
-})
-router.get('/max', (req, res) => {
-    const id = req.body.id
-    connection.query(
-        `SELECT * FROM vote WHERE total = (SELECT MAX(total) FROM vote WHERE id_poll = '${id}') and id_poll = '${id}'`,
-        (error, result) => {
-            if(error) {
-                console.log(error)
+            for(let i = 0; i < result.length; i++) {
+                result[i].end = date.format(result[i].end,'YYYY/MM/DD HH:mm:ss')
+                result[i].start = date.format(result[i].start,'YYYY/MM/DD HH:mm:ss')
             }
             return res.json(result)
         }
@@ -55,6 +43,10 @@ router.get('/recent-poll', (req, res) => {
                     message: "There are no recent vote"
                 })
             }
+            for(let i = 0; i < result.length; i++) {
+                result[i].end = date.format(result[i].end,'YYYY/MM/DD HH:mm:ss')
+                result[i].start = date.format(result[i].start,'YYYY/MM/DD HH:mm:ss')
+            }
             return res.json(result)
         }
     )
@@ -74,6 +66,10 @@ router.get('/upcoming-poll', (req, res) => {
                 return res.json({
                     message: "There are no upcoming vote"
                 })
+            }
+            for(let i = 0; i < result.length; i++) {
+                result[i].end = date.format(result[i].end,'YYYY/MM/DD HH:mm:ss')
+                result[i].start = date.format(result[i].start,'YYYY/MM/DD HH:mm:ss')
             }
             return res.json(result)
         }

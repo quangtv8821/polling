@@ -9,11 +9,6 @@
               <v-list-item-content>
                 <v-list-item-title v-text="item.title"></v-list-item-title>
 
-                <v-list-item-subtitle
-                  class="text--primary"
-                  v-text="`Most voted: ` + item.most_vote"
-                ></v-list-item-subtitle>
-
                 <v-list-item-subtitle v-text="`Total vote:` + item.total_vote"></v-list-item-subtitle>
               </v-list-item-content>
 
@@ -41,8 +36,7 @@ export default {
   },
   methods: {
     changePage(item) {
-      console.log(item.id)
-      window.location.href = `http://localhost:3000/vote-content?id=${item.id}`
+      this.$router.push(`/vote-content?id=${item.id}`)
     },
   }
 }

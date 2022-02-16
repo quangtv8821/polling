@@ -4,14 +4,14 @@
         multiple
       >
         <template class="mt-5">
-          <v-list-item v-for="item in polls" :key="item.id">
+          <v-list-item v-for="item in polls" :key="item.id" @click="changePage(item)">
             <v-list-item-content>
               <v-list-item-title v-text="item.title"></v-list-item-title>
 
-              <v-list-item-subtitle
+              <!-- <v-list-item-subtitle
                 class="text--primary"
                 v-text="`Most vote: ` + item.most_vote"
-              ></v-list-item-subtitle>
+              ></v-list-item-subtitle> -->
 
             </v-list-item-content>
 
@@ -37,6 +37,9 @@ export default {
     this.$store.dispatch('list/endedPoll/getPolls')
   },
   methods: {
+    changePage(item) {
+      this.$router.push(`/vote-end?id=${item.id}`)
+    },
   },
 }
 </script>

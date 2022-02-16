@@ -23,13 +23,32 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 export default {
+  computed: {
+    users() {
+      return this.$store.state.user.user.role
+    }
+  },
   methods: {
     redirectCreatVote() {
-      window.location.href = "http://localhost:3000/create-vote"
+      console.log(this.users);
+      if(this.users == "admin") {
+        this.$router.push('/create-vote')
+      } else {
+        Swal.fire({
+            title: 'Only admin can create poll',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        })
+      }
     },
     redirectHome() {
-      window.location.href = "http://localhost:3000/"
+      this.$router.push('/')
     }
   }
 }

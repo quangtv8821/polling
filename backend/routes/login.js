@@ -25,8 +25,6 @@ router.post('/', (req, res) => {
                 message: "Wrong user information, please check again!"
             })
         }
-
-        console.log(typeof password);
         bcrypt.compare(
             password, 
             result[0]['password'],
@@ -36,9 +34,6 @@ router.post('/', (req, res) => {
                         message: "Wrong user information, please check again!"
                     })
                 }
-
-                //console.log(results);//results return false
-                //console.log(result[0]['password'].length);//length return 60 -> will return false
 
                 if(results) {
                     const token = jwt.sign({id: result[0].id}, process.env.SECRET, {expiresIn: '15m'})

@@ -30,7 +30,9 @@ router.post('/', (req, res) => {
                                     message: error
                                 })
                             }
-                            return res.json("Register success")
+                            return res.json({
+                                message: "Register success"
+                            })
                         })
                     }
                 })

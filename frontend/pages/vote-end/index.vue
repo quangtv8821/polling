@@ -3,7 +3,7 @@
     <Navbar />
     <!-- <Header /> -->
     <v-container class="mx-auto pt-8 pb-8">
-      <Tab />
+      <VoteEndedContent />
     </v-container>
     <Footer />
   </v-app>
@@ -13,17 +13,7 @@
   export default {
     data () {
       return {
-        tab: null
       }
     },
-    // router: {
-    //   extendRoutes() {
-    //     if(!localStorage.getItem('user_token')) {
-    //         routes.push({
-    //         path: '/login'
-    //       })
-    //     }
-    //   }
-    // }
   }
 </script>

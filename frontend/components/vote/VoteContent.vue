@@ -73,8 +73,8 @@ export default {
       }
   },
   mounted() {
-    this.getContentData()
     this.getTitleData()
+    this.getContentData()
   },
   methods: {
     getContentData() {

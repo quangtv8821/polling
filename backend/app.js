@@ -33,4 +33,6 @@ const port = process.env.PORT || 5500
 
 app.listen(port, () => {
     console.log(`App listen on ${port}`);
+    // console.log(process.env.TZ);
+    // console.log(new Date().toString())
 })

@@ -8,8 +8,7 @@
 export default {
     methods: {
         logout() {
-            localStorage.removeItem("user_token")
-            window.location.href = "http://localhost:3000/login"
+            this.$store.dispatch('user/logout')
         }
     }
 }
