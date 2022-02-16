@@ -78,7 +78,6 @@ export default {
         checkForm() {
             this.$refs.form.validate()
             this.$store.dispatch('user/login', this.user)
-            console.log(this.$store.state.user.user);
         },
         validEmail(email) {
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

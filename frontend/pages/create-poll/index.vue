@@ -5,7 +5,7 @@
     <v-container>
         <v-row align="center">
             <v-col align="center">
-                <CreateVote />
+                <CreatePoll />
             </v-col>
         </v-row>
     </v-container>
@@ -15,6 +15,7 @@
 
 <script>
   export default {
+    middleware: 'auth',
     data () {
       return {
       }

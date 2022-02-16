@@ -152,7 +152,7 @@ export default {
         }
     },
     methods: {
-        addChoice(index) {
+        addChoice(choice) {
             if(this.poll.vote.length == 4) {
                 alert("You can't add more choice")
                 return

@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 11, 2022 at 05:54 AM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 8.0.15
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th2 16, 2022 lúc 03:49 PM
+-- Phiên bản máy phục vụ: 10.4.22-MariaDB
+-- Phiên bản PHP: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `polling`
+-- Cơ sở dữ liệu: `polling`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `poll`
+-- Cấu trúc bảng cho bảng `poll`
 --
 
 CREATE TABLE `poll` (
@@ -37,26 +37,24 @@ CREATE TABLE `poll` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `poll`
+-- Đang đổ dữ liệu cho bảng `poll`
 --
 
 INSERT INTO `poll` (`id`, `title`, `total_vote`, `start`, `end`, `status`) VALUES
-(2, 'Bài vote thứ 2', 2, '2022-02-10 15:59:02', '2022-02-10 16:20:10', 2),
-(3, 'Bài vote thứ 3', 2, '2022-02-10 12:00:00', '2022-02-10 16:00:00', 1),
-(4, 'Bài đăng số 4', 3, '2022-02-11 12:00:00', '2022-02-11 16:00:00', 1),
-(5, 'Bài đăng số 5', 3, '2022-02-11 12:00:00', '2022-02-11 16:00:00', 1),
-(11, 'Bài đăng số 10', 3, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 1),
-(12, 'Bài đăng số 12', 3, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 2),
-(13, 'Bài đăng số 13', 3, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 1),
-(14, 'Bài đăng số 14', 3, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 1),
-(15, 'Bài đăng số 15', 4, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 2),
-(16, 'Bài vote thứ 16', 2, '2022-02-10 17:18:32', '2022-02-10 11:18:13', 2),
-(19, 'Bài đăng số 17', 2, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 2);
+(20, 'Bài đăng số 24', 4, '2022-02-16 12:00:00', '2022-02-18 17:00:00', 1),
+(21, 'Bài đăng số 25', 3, '2022-02-16 12:00:00', '2022-02-18 17:00:00', 1),
+(22, 'Bài đăng số 26', 4, '2022-02-16 12:00:00', '2022-02-18 17:00:00', 1),
+(23, 'Bài đăng số 27', 2, '2022-02-11 12:00:00', '2022-02-12 17:00:00', 2),
+(24, 'Bài đăng số 28', 3, '2022-02-11 12:00:00', '2022-02-13 17:00:00', 2),
+(25, 'Bài đăng số 29', 2, '2022-02-11 12:00:00', '2022-02-14 17:00:00', 2),
+(26, 'Bài đăng số 30', 3, '2022-02-22 12:00:00', '2022-02-23 17:00:00', 3),
+(27, 'Bài đăng số 31', 2, '2022-02-22 12:00:00', '2022-02-23 17:00:00', 3),
+(28, 'Bài đăng số 32', 2, '2022-02-22 12:00:00', '2022-02-23 17:00:00', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Cấu trúc bảng cho bảng `user`
 --
 
 CREATE TABLE `user` (
@@ -67,7 +65,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
+-- Đang đổ dữ liệu cho bảng `user`
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `role`) VALUES
@@ -79,7 +77,7 @@ INSERT INTO `user` (`id`, `email`, `password`, `role`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vote`
+-- Cấu trúc bảng cho bảng `vote`
 --
 
 CREATE TABLE `vote` (
@@ -90,64 +88,79 @@ CREATE TABLE `vote` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `vote`
+-- Đang đổ dữ liệu cho bảng `vote`
 --
 
 INSERT INTO `vote` (`id`, `title`, `total`, `id_poll`) VALUES
-(7, 'Lựa chọn 3', 10, 13),
-(8, 'một', 0, 14),
-(9, 'hai', 0, 14),
-(10, 'ba', 0, 14),
-(11, 'Lựa chọn một', 0, 15),
-(12, 'Lựa chọn hai', 5, 15),
-(13, 'Lựa chọn ba', 0, 15),
-(14, 'Lựa chọn bốn', 0, 15),
-(15, 'Lựa chọn một', 0, 19),
-(16, 'Lựa chọn hai', 0, 19);
+(17, 'Lựa chọn một', 0, 20),
+(18, 'Lựa chọn hai', 2, 20),
+(19, 'Lựa chọn ba', 2, 20),
+(20, 'Lựa chọn bốn', 1, 20),
+(21, 'Lựa chọn một', 0, 21),
+(22, 'Lựa chọn hai', 0, 21),
+(23, 'Lựa chọn ba', 0, 21),
+(24, 'Lựa chọn một', 1, 22),
+(25, 'Lựa chọn hai', 0, 22),
+(26, 'Lựa chọn ba', 0, 22),
+(27, 'Lựa chọn bốn', 0, 22),
+(28, 'Lựa chọn một', 0, 23),
+(29, 'Lựa chọn hai', 0, 23),
+(30, 'Lựa chọn một', 0, 24),
+(31, 'Lựa chọn hai', 2, 24),
+(32, 'Lựa chọn ba', 0, 24),
+(33, 'Lựa chọn một', 0, 25),
+(34, 'Lựa chọn hai', 0, 25),
+(35, 'Lựa chọn một', 0, 26),
+(36, 'Lựa chọn hai', 0, 26),
+(37, 'Lựa chọn ba', 0, 26),
+(38, 'Lựa chọn một', 0, 27),
+(39, 'Lựa chọn hai', 0, 27),
+(40, 'Lựa chọn một', 0, 28),
+(41, 'Lựa chọn hai', 0, 28);
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `poll`
+-- Chỉ mục cho bảng `poll`
 --
 ALTER TABLE `poll`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- Chỉ mục cho bảng `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `vote`
+-- Chỉ mục cho bảng `vote`
 --
 ALTER TABLE `vote`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT for table `poll`
+-- AUTO_INCREMENT cho bảng `poll`
 --
 ALTER TABLE `poll`
-  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
   MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `vote`
+-- AUTO_INCREMENT cho bảng `vote`
 --
 ALTER TABLE `vote`
-  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

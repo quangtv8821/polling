@@ -11,19 +11,11 @@
 
 <script>
   export default {
+    middleware: 'auth',
     data () {
       return {
         tab: null
       }
-    },
-    // router: {
-    //   extendRoutes() {
-    //     if(!localStorage.getItem('user_token')) {
-    //         routes.push({
-    //         path: '/login'
-    //       })
-    //     }
-    //   }
-    // }
+    }
   }
 </script>

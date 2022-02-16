@@ -34,7 +34,7 @@ export default {
     redirectCreatVote() {
       console.log(this.users);
       if(this.users == "admin") {
-        this.$router.push('/create-vote')
+        this.$router.push('/create-poll')
       } else {
         Swal.fire({
             title: 'Only admin can create poll',

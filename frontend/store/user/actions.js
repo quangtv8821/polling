@@ -9,6 +9,7 @@ export default {
         .then(res => {
             if(res.data.message === "logged in") {
                 user.role = res.data.role
+                user.token = res.data.token
                 commit('addUser', user)
                 localStorage.setItem('user_token', res.data.token)
                 this.$router.push('/')
