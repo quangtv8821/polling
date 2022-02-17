@@ -40,6 +40,7 @@ router.post('/', (req, res) => {
                     return res.json({
                         message: "logged in",
                         role: result[0]['role'],
+                        id: result[0]['id'],
                         token: token
                     })
                 }

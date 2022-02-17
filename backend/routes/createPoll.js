@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
     // }
 
     connection.query(
-        `INSERT INTO poll (id, title, total_vote, start, end, status) VALUES (NULL, '${title}', '${totalVote}', '${start}', '${end}', '1')`,
+        `INSERT INTO poll (id, title, total_vote, start, end, status) VALUES (NULL, '${title}', '${totalVote}', '${start}', '${end}', '3')`,
         (error, result) => {
             
             if(error) {

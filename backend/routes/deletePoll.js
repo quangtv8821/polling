@@ -3,13 +3,13 @@ const express = require('express')
 const router = express.Router()
 
 const connection = require('../database/database')
-//turn status to 2 == delete
+//turn status to 4 == delete
 
 router.post('/', (req, res) => {
     const pollId = req.body.poll_id
-
+    console.log(pollId);
     connection.query(
-        `SELECT * FROM poll WHERE id = '${pollId}' AND status = '2'`,
+        `SELECT * FROM poll WHERE id = '${pollId}' AND status = '4'`,
         (error, result) => {
             if(error) {
                 console.log(error);
@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
                 })
             }
             connection.query(
-                `UPDATE poll SET status = 2 WHERE id = '${pollId}'`,
+                `UPDATE poll SET status = 4 WHERE id = '${pollId}'`,
                 (error, result) => {
                     if(error) {
                         console.log(error);
@@ -31,14 +31,12 @@ router.post('/', (req, res) => {
                         })
                     }
         
-                    return res.json({
-                        messsage: "Delete poll success"
+                return res.json({
+                    message: "Delete poll success"
                 })
             })
         }
     )
-
-
 })
 
 module.exports = router

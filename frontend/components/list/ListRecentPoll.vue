@@ -28,15 +28,15 @@
 export default {
   computed: {
     polls() {
-      return this.$store.state.list.recentPoll.polls
+      	return this.$store.state.list.recentPoll.polls
     }
   },
   mounted () {
-    this.$store.dispatch('list/recentPoll/getPolls')
+    	this.$store.dispatch('list/recentPoll/getPolls')
   },
   methods: {
     changePage(item) {
-      this.$router.push(`/vote-content?id=${item.id}`)
+      	this.$router.push(`/vote-content?id=${item.id}`)
     },
   }
 }

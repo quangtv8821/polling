@@ -30,15 +30,15 @@
 export default {
   computed: {
     polls() {
-      return this.$store.state.list.endedPoll.polls
+        return this.$store.state.list.endedPoll.polls
     }
   },
   mounted () {
-    this.$store.dispatch('list/endedPoll/getPolls')
+        this.$store.dispatch('list/endedPoll/getPolls')
   },
   methods: {
     changePage(item) {
-      this.$router.push(`/vote-end?id=${item.id}`)
+        this.$router.push(`/vote-end?id=${item.id}`)
     },
   },
 }

@@ -10,6 +10,7 @@ export default {
             if(res.data.message === "logged in") {
                 user.role = res.data.role
                 user.token = res.data.token
+                user.id = res.data.id
                 commit('addUser', user)
                 localStorage.setItem('user_token', res.data.token)
                 this.$router.push('/')
@@ -25,6 +26,7 @@ export default {
         this.$router.push('/login')
     },
     register({commit}, user) {
+        console.log(user);
         axios.post(
             'http://localhost:5500/register',
             user

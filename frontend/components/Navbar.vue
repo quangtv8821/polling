@@ -5,7 +5,7 @@
       class="white--text">
       <v-app-bar-nav-icon color="white"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Polling realtime app</v-toolbar-title>
+      <v-toolbar-title>Polling realtime app - {{name}}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -28,11 +28,13 @@ export default {
   computed: {
     users() {
       return this.$store.state.user.user.role
+    },
+    name() {
+      return this.$store.state.user.user.email
     }
   },
   methods: {
     redirectCreatVote() {
-      console.log(this.users);
       if(this.users == "admin") {
         this.$router.push('/create-poll')
       } else {

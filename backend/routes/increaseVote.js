@@ -13,21 +13,38 @@ router.post('/', (req, res) =>{
                          messsage: error
                     })
                }
+               return res.json({
+                    result: result
+               })
+          // connection.query(
+          //      `SELECT total FROM vote WHERE id = '${voteId}'`,
+          //      (error, result) => {
+          //           if(error) {
+          //                return res.send({
+          //                     messsage: error
+          //                })
+          //           }
 
-          connection.query(
-               `SELECT total FROM vote WHERE id = '${voteId}'`,
-               (error, result) => {
-                    if(error) {
-                         return res.send({
-                              messsage: error
-                         })
-                    }
+          //           return res.json({
+          //                result: result
+          //           })
+          //      }
+          // )       
+     })
+})
 
-                    return res.json({
-                         result: result
-                    })
-               }
-          )       
+router.post('/vote', (req, res) => {
+     const id_user = req.body.id_user
+     const id_vote = req.body.id_vote
+     connection.query(
+         `UPDATE is_voted SET status = 1 WHERE id_user = '${id_user}' AND id_vote = '${id_vote}'`,
+         (error, result) => {
+             if(error) {
+                 return res.send({
+                     messsage: error
+                 })
+             }
+             return res.json(result)
      })
 })
 
