@@ -26,13 +26,11 @@ export default {
         this.$router.push('/login')
     },
     register({commit}, user) {
-        console.log(user);
         axios.post(
             'http://localhost:5500/register',
             user
         )
         .then(res => {
-            console.log(res.data);
             if(res.data.message === "Register success") {
                 Swal.fire({
                     title: 'Register success',

@@ -40,14 +40,15 @@
   </v-card>
 </template>
 <script>
-  export default {
+export default {
     data () {
-      return {
-        tab: null,
-        items: [
-            'Ended', 'Recent', 'Upcoming'
-        ]
-      }
-    },
-  }
+        return {
+            tab: null,
+            componentKey: 0,
+            items: [
+                'Ended', 'Recent', 'Upcoming'
+            ]
+        }
+    }
+}
 </script>

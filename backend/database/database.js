@@ -15,6 +15,8 @@ connection.connect( (error) => {
     } else {
         console.log("connected");
     }
+    connection.query('UPDATE poll SET status = 2 WHERE NOW() > end')
+    connection.query('UPDATE poll set status = 1 WHERE NOW() <= end AND NOW() >= start')
 })
 
 //database poll có status -> 1 đang diễn ra 

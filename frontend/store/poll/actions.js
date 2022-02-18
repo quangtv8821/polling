@@ -29,7 +29,8 @@ export default {
             console.log(error);
         })
     },
-    deletePoll(data) {
+    deletePoll({commit}, data) {
+        //phai co tham so dau tien la commit de nhan data
         axios.post(
             'http://localhost:5500/delete-poll',
             data
@@ -46,7 +47,7 @@ export default {
                     }
                 }).then((result) => {
                 if (result.isConfirmed) {
-                    this.$router.push("/login")
+                    this.$router.go()
                     //refresh lai trang la tot nhat
                 }
             })

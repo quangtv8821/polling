@@ -6,14 +6,5 @@ export default {
         .then(response => {
             commit('ADD_POLLS', response.data)
         })
-    },
-    // getMostVote({commit}, id) {
-    //     axios.post(
-    //         `http://localhost:5500/most-vote`,
-    //         id
-    //     )
-    //     .then(res => {
-    //         commit('ADD_MOST_VOTE', res.data)
-    //     })
-    // }
+    }
 }

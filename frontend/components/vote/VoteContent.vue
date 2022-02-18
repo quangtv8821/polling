@@ -34,13 +34,16 @@
                 multiple
             >
                 <v-list-item 
-                    v-for="item in votes"
+                    v-for="(item, index) in votes"
                     :key="item.choice"
                 >
                     <template>
                         <v-list-item-action>
                             <v-checkbox
-                                @click="increaseVote(item.id)"
+                                v-model="checkbox[index]"
+                                v-bind:false-value="0"
+                                v-bind:true-value="1"
+                                @click="changeVote(item.id, checkbox[index])"
                             ></v-checkbox>
                         </v-list-item-action>
 
@@ -62,17 +65,12 @@
 <script>
 import axios from 'axios'
 export default {
-//   head: {
-//     script: [
-//       {src: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js'},
-//     ],
-//   }, //socket
     data() {
         return {
-            check: null,
+            checkbox: [],
             poll : {
-            title : null,
-            end: null
+                title : null,
+                end: null
             },
             votes: []
         }
@@ -85,7 +83,6 @@ export default {
     mounted() {
         this.getTitleData()
         this.getContentData()
-        //tao ra row moi ở is voted
     },
     methods: {
         getContentData() {
@@ -93,6 +90,7 @@ export default {
             .then(res => {
                 this.votes = res.data
                 for(let i = 0; i < this.votes.length; i++) {
+                    this.insertUserVote(this.votes[i].id)
                     this.checkUserVote(this.votes[i].id)
                 }
             })
@@ -110,29 +108,18 @@ export default {
                 console.log(error);
             })
         },
-        increaseVote(id) {
-            //check if user is voted
-            const data = {
-                id_user : this.userId,
-                id_vote : id
-            }
-            axios.post(
-                `http://localhost:5500/is-voted`,
-                data
-            )
-            .then(res => {
-                if(res.data[0].status == 1) {
-                    alert("Đã vote")
-                    return
-                }
+        changeVote(id, value) {
+            if(value == 1) {
                 this.$store.dispatch('vote/increaseVote', {vote_id: id})
-                this.$store.dispatch('vote/setStatusVote', data)
-            })
-            .catch(error => {
-                console.log(error);
-            })
+                this.$store.dispatch('vote/setStatusVote',{id_user : this.userId, id_vote : id})
+            }
+            if(value == 0) {
+                this.$store.dispatch('vote/decreaseVote', {vote_id: id})
+                this.$store.dispatch('vote/setStatusVoteDecrease',{id_user : this.userId, id_vote : id})
+            }
         },
-        checkUserVote(id) {
+        insertUserVote(id) {
+            //check if user isnt vote -> create a row in is_voted table
             const data = {
                 id_user : this.userId,
                 id_vote : id
@@ -142,7 +129,25 @@ export default {
                 data
             )
             .then(res => {
-                console.log(res.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        },
+        checkUserVote(id) {
+            //check if user isnt vote -> create a row in is_voted table
+            const data = {
+                id_user : this.userId,
+                id_vote : id
+            }
+            axios.post(
+                `http://localhost:5500/is-voted/check-vote`,
+                data
+            )
+            .then(res => {
+                console.log(res.data.data);
+                this.checkbox.push(res.data.data)
+                console.log(this.checkbox);
             })
             .catch(error => {
                 console.log(error);
