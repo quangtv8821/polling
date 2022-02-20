@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 
 const app = express()
+const server = require('http').createServer(app)
 
 const authMiddleWare = require('./middleware/auth')
 
@@ -34,6 +35,17 @@ app.use('/is-voted', isVotedRoute)
 
 const port = process.env.PORT || 5500
 
-app.listen(port, () => {
+const io = require('socket.io')(server , {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"]
+    }
+  });
+
+io.on('connect', socket => {
+  console.log('có người kết nối này');
+});
+
+server.listen(port, () => {
     console.log(`App listen on ${port}`);
 })
