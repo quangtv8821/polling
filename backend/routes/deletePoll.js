@@ -7,7 +7,6 @@ const connection = require('../database/database')
 
 router.post('/', (req, res) => {
     const pollId = req.body.poll_id
-    console.log(pollId);
     connection.query(
         `SELECT * FROM poll WHERE id = '${pollId}' AND status = '4'`,
         (error, result) => {

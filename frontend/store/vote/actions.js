@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { io } from "socket.io-client"
 export default {
     increaseVote({commit}, data) {
         axios.post(
@@ -6,7 +7,8 @@ export default {
             data
         )
         .then(res => {
-            console.log(res.data);
+            // console.log(res.data);
+            // io.connect(`http://localhost:5500/`, { secure: true }).emit('increase', res.data)
         })
         .catch(error => {
             console.log(error);
@@ -18,7 +20,6 @@ export default {
             data
         )
         .then(res => {
-            console.log(res.data);
         })
         .catch(error => {
             console.log(error);
@@ -30,7 +31,6 @@ export default {
             data
         )
         .then(res => {
-            console.log(res.data);
         })
         .catch(error => {
             console.log(error);
@@ -42,7 +42,6 @@ export default {
             data
         )
         .then(res => {
-            console.log(res.data);
         })
         .catch(error => {
             console.log(error);

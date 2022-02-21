@@ -5,7 +5,7 @@ const router = express.Router()
 
 const connection = require('../database/database')
 
-router.get('/poll-content', (req, res) => {
+router.get('/', (req, res) => {
     const id = req.query.id
     connection.query(
         `SELECT * FROM vote WHERE id_poll = '${id}'`,

@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     getContentData() {
-        axios.get(`http://localhost:5500/get-poll/poll-content/?id=${this.$route.query.id}`)
+        axios.get(`http://localhost:5500/polls/?id=${this.$route.query.id}`)
         .then(res => {
             this.votes = res.data
         })
@@ -85,7 +85,7 @@ export default {
         })
     },
     getTitleData() {
-        axios.get(`http://localhost:5500/get-poll/poll-title/?id=${this.$route.query.id}`)
+        axios.get(`http://localhost:5500/polls/poll-title/?id=${this.$route.query.id}`)
         .then(res => {
             this.poll.title = res.data[0].title
             this.poll.end = res.data[0].end
@@ -98,7 +98,7 @@ export default {
         const obj = {
             id: this.$route.query.id
         }
-        axios.post(`http://localhost:5500/get-poll/most-vote`, obj)
+        axios.post(`http://localhost:5500/polls/most-vote`, obj)
         .then(res => {
             this.winner = res.data
         })

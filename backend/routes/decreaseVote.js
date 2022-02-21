@@ -20,10 +20,10 @@ router.post('/', (req, res) =>{
 })
 
 router.post('/vote', (req, res) => {
-     const id_user = req.body.id_user
-     const id_vote = req.body.id_vote
+     const user_id = req.body.user_id
+     const vote_id = req.body.vote_id
      connection.query(
-         `UPDATE is_voted SET status = 0 WHERE id_user = '${id_user}' AND id_vote = '${id_vote}'`,
+         `UPDATE is_voted SET status = 0 WHERE id_user = '${user_id}' AND id_vote = '${vote_id}'`,
          (error, result) => {
              if(error) {
                  return res.send({
