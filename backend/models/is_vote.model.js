@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Is_vote = sequelize.define("is_vote", {
+    const Is_votes = sequelize.define("is_vote", {
         id_user: {
             type: Sequelize.INTEGER
         },
@@ -10,5 +10,5 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER 
         }
     });
-    return Is_vote;
+    return Is_votes;
 };

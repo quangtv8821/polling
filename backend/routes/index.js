@@ -1,79 +1,94 @@
 const express = require('express')
 const router = express.Router()
 const date = require('date-and-time')
-const connection = require('../database/database')
+
+const db = require("../models")
+const Polls = db.polls
 
 //status = 1 -> recent, 2-> ended, 3 -> upcoming
 
-//get ended vote
-router.get('/ended-poll', (req, res) => {
-    connection.query(
-        `SELECT * FROM poll WHERE status = '2'`,
-        (error, result) => {
-            if(error) {
-                return res.send({
-                    message: error
-                })
-            }
-            if(result.length <= 0) {
-                return res.json({
-                    message: "There are no ended vote"
-                })
-            }
-            for(let i = 0; i < result.length; i++) {
-                result[i].end = date.format(result[i].end,'YYYY/MM/DD HH:mm:ss')
-                result[i].start = date.format(result[i].start,'YYYY/MM/DD HH:mm:ss')
-            }
-            return res.json(result)
+router.get('/polls', async (req, res) =>    {
+    //http://localhost:5500/polls?status=3
+    const status = req.query.status
+    const polls = await Polls.findAll({
+        raw: true,
+        where: {
+            status: status
         }
-    )
-})
-//get recent vote
-router.get('/recent-poll', (req, res) => {
-    connection.query(
-        `SELECT * FROM poll WHERE status = '1'`,
-        (error, result) => {
-            if(error) {
-                return res.send({
-                    message: error
-                })
-            }
-            if(result.length <= 0) {
-                return res.json({
-                    message: "There are no recent vote"
-                })
-            }
-            for(let i = 0; i < result.length; i++) {
-                result[i].end = date.format(result[i].end,'YYYY/MM/DD HH:mm:ss')
-                result[i].start = date.format(result[i].start,'YYYY/MM/DD HH:mm:ss')
-            }
-            return res.json(result)
-        }
-    )
+    })
+
+    const promise = polls.map(poll => {
+        poll.end = date.format(poll.end,'YYYY/MM/DD HH:mm:ss')
+        poll.start = date.format(poll.start,'YYYY/MM/DD HH:mm:ss')
+      })
+      Promise.all(promise)
+
+    return res.json(polls)
 })
 
-//get upcoming vote
-router.get('/upcoming-poll', (req, res) => {
+router.get('/polls/:id', async (req, res) =>    {
+    //http://localhost:5500/polls/:id
+    const id = req.params.id
+    console.log(id);
+    const polls = await Polls.findAll({
+        raw: true,
+        where: {
+            id: id
+        }
+    })
+
+    return res.json(polls)
+})
+
+router.post("/", async (req, res) => {
+    const title = req.body.title
+    const totalVote = req.body.total_vote
+    const start = req.body.start
+    const end = req.body.end
+
+    const vote =  req.body.vote
+
+    //format json to post
+    // {
+    //     "title" : "Bài đăng số 15",
+    //     "total_vote" : "4",
+    //     "start" : "2022-02-11 12:00:00",
+    //     "end" : "2022-02-11 17:00:00",
+    //     "vote": [
+    //         "Lựa chọn một",
+    //         "Lựa chọn hai",
+    //         "Lựa chọn ba",
+    //         "Lựa chọn bốn"
+    //     ]
+    // }
+
     connection.query(
-        `SELECT * FROM poll WHERE status = '3'`,
+        `INSERT INTO poll (id, title, total_vote, start, end, status) VALUES (NULL, '${title}', '${totalVote}', '${start}', '${end}', '3')`,
         (error, result) => {
+            
             if(error) {
+ 
                 return res.send({
                     message: error
                 })
             }
-            if(result.length <= 0) {
-                return res.json({
-                    message: "There are no upcoming vote"
+             //result.insertId là id của poll
+            for(let i = 0; i < totalVote; i++) {
+                connection.query(
+                    `INSERT INTO vote (id, title, total, id_poll) VALUES (NULL, '${vote[i]}', '', '${result.insertId}')`,
+                    (error, result) => {
+                        if(error) {
+                            return res.send({
+                                message: error
+                        })
+                    }
                 })
-            }
-            for(let i = 0; i < result.length; i++) {
-                result[i].end = date.format(result[i].end,'YYYY/MM/DD HH:mm:ss')
-                result[i].start = date.format(result[i].start,'YYYY/MM/DD HH:mm:ss')
-            }
-            return res.json(result)
+            } 
+            return res.status(200).send({
+                message: "Add poll successful"
+            })
         }
-    )
+    )   
 })
 
 module.exports = router

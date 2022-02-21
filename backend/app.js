@@ -18,6 +18,7 @@ const deletePollRoute = require('./routes/deletePoll')
 const getPollRoute = require('./routes/getPoll')
 const isVotedRoute = require('./routes/isVoted')
 const getTotalRoute = require('./routes/getTotal')
+
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

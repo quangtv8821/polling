@@ -14,7 +14,7 @@ export default {
   middleware: 'auth',
   data () {
     return {
-        tab: null
+      tab: null
     }
   }
 }
