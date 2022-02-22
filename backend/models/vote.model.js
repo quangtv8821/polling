@@ -1,12 +1,12 @@
 module.exports = (sequelize, Sequelize) => {
-    const Votes = sequelize.define("vote", {
+    const Votes = sequelize.define("votes", {
         title: {
             type: Sequelize.STRING
         },
         total: {
             type: Sequelize.INTEGER 
         },
-        id_poll: {
+        poll_id: {
             type: Sequelize.INTEGER 
         }
     });

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2022 at 11:37 AM
+-- Generation Time: Feb 22, 2022 at 06:04 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.15
 
@@ -24,187 +24,146 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `is_voted`
+-- Table structure for table `is_votes`
 --
 
-CREATE TABLE `is_voted` (
-  `id` tinyint(3) NOT NULL,
-  `id_user` tinyint(3) NOT NULL,
-  `id_vote` tinyint(3) NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 0
+CREATE TABLE `is_votes` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `vote_id` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `is_voted`
+-- Dumping data for table `is_votes`
 --
 
-INSERT INTO `is_voted` (`id`, `id_user`, `id_vote`, `status`) VALUES
-(1, 6, 8, 1),
-(2, 6, 31, 1),
-(3, 6, 32, 1),
-(4, 7, 31, 1),
-(5, 7, 32, 1),
-(8, 8, 31, 0),
-(9, 8, 32, 0),
-(16, 9, 31, 0),
-(17, 9, 32, 0),
-(18, 17, 31, 1),
-(19, 17, 32, 0);
+INSERT INTO `is_votes` (`id`, `user_id`, `vote_id`, `status`, `createdAt`, `updatedAt`) VALUES
+(1, 2, 1, 0, '2022-02-22 04:20:53', '2022-02-22 04:25:48'),
+(3, 2, 2, 0, '2022-02-22 03:24:40', '2022-02-22 04:43:53'),
+(4, 2, 3, 1, '2022-02-22 03:39:11', '2022-02-22 04:44:32'),
+(5, 2, 4, 0, '2022-02-22 04:43:30', '2022-02-22 04:43:30'),
+(6, 3, 1, 0, '2022-02-22 04:47:39', '2022-02-22 05:02:22'),
+(7, 3, 2, 1, '2022-02-22 04:47:39', '2022-02-22 04:55:53'),
+(8, 3, 3, 1, '2022-02-22 04:49:24', '2022-02-22 05:02:20'),
+(9, 3, 4, 1, '2022-02-22 04:49:24', '2022-02-22 05:02:10'),
+(10, 7, 1, 0, '2022-02-22 05:03:36', '2022-02-22 05:03:36'),
+(11, 7, 2, 0, '2022-02-22 05:03:36', '2022-02-22 05:03:36'),
+(12, 7, 4, 0, '2022-02-22 05:03:36', '2022-02-22 05:03:36');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `poll`
+-- Table structure for table `polls`
 --
 
-CREATE TABLE `poll` (
-  `id` tinyint(3) NOT NULL,
-  `title` varchar(30) NOT NULL,
-  `total_vote` int(11) NOT NULL,
-  `start` datetime NOT NULL DEFAULT current_timestamp(),
-  `end` datetime NOT NULL,
-  `status` tinyint(3) NOT NULL DEFAULT 1
+CREATE TABLE `polls` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `total_vote` int(11) DEFAULT NULL,
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `poll`
+-- Dumping data for table `polls`
 --
 
-INSERT INTO `poll` (`id`, `title`, `total_vote`, `start`, `end`, `status`) VALUES
-(14, 'Bài đăng số 14', 3, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 2),
-(15, 'Bài đăng số 15', 4, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 2),
-(20, 'Bài đăng số 20', 4, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 2),
-(21, 'Bài đăng số 21', 2, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 2),
-(22, 'Bài đăng số 22', 4, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 2),
-(23, 'Bài đăng số 23', 4, '2022-02-11 12:00:00', '2022-02-11 17:00:00', 2),
-(24, 'Bài đăng số 33', 2, '2022-02-17 13:07:00', '2022-02-18 13:07:00', 1),
-(25, 'Bài vote thứ 34', 2, '2022-02-18 13:00:00', '2022-02-20 14:00:00', 3),
-(27, 'Bài đăng số 35', 2, '2022-02-18 13:00:00', '2022-02-20 14:00:00', 3),
-(28, 'Bài đăng số 36', 4, '2022-02-17 14:00:00', '2022-02-17 14:03:00', 2),
-(35, 'Bài đăng 37', 2, '2022-02-20 15:19:00', '2022-02-22 15:19:00', 3),
-(36, 'Bài đăng 38', 2, '2022-02-20 15:19:00', '2022-02-22 15:19:00', 3),
-(37, 'Bài đăng 39', 2, '2022-02-20 15:19:00', '2022-02-22 15:19:00', 3);
+INSERT INTO `polls` (`id`, `title`, `total_vote`, `start`, `end`, `status`, `createdAt`, `updatedAt`) VALUES
+(1, 'Bài đăng số 1', 4, '2022-02-22 15:00:00', '2022-02-26 10:00:00', 1, '2022-02-22 02:41:01', '2022-02-22 02:41:01'),
+(2, 'Bài đăng số 2', 4, '2022-02-22 15:00:00', '2022-02-26 10:00:00', 2, '2022-02-22 02:41:28', '2022-02-22 02:41:28'),
+(3, 'Bài đăng số 3', 3, '2022-02-22 15:00:00', '2022-02-27 10:00:00', 3, '2022-02-22 02:41:47', '2022-02-22 02:41:47');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `user` (
-  `id` tinyint(3) NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `password` varchar(80) NOT NULL,
-  `role` varchar(10) NOT NULL DEFAULT 'user'
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `role`) VALUES
-(6, 'admin@rabiloo.com', '$2b$10$P3kaiyBZIYvg/0Ynl3TDTuZnngfJwnichLe6mjNeSHj3hH0TcZb46', 'admin'),
-(7, 'quangtv@rabiloo.com', '$2b$10$5SrU/V9kI7k0JTu6bGg/EuluKgjs55XhG7C0I2yDF5Gbfe0p01mbq', 'user'),
-(8, 'haily@rabiloo.com', '$2b$10$dcyRtTmhCMm4avktzPj2jef/b3eVbR4p.BmGaNlauKEI.ul6l/a0i', 'user'),
-(9, 'hoaden@rabiloo.com', '$2b$10$Q0WQDzy11pDto6lGfnkqOOkY0E9UUfsihuALBelsSz/dJwhrxbTy.', 'user'),
-(17, 'admin2@rabiloo.com', '$2b$10$1R8dECK0GjPjWQVFYqSNpOQN.3WWZyk9nTbvab6Qg3b6qDJeIB1UW', 'user');
+INSERT INTO `users` (`id`, `email`, `password`, `role`, `createdAt`, `updatedAt`) VALUES
+(2, 'admin@rabiloo.com', '$2b$10$P3kaiyBZIYvg/0Ynl3TDTuZnngfJwnichLe6mjNeSHj3hH0TcZb46', 'admin', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'quangtv@rabiloo.com', '$2b$10$5SrU/V9kI7k0JTu6bGg/EuluKgjs55XhG7C0I2yDF5Gbfe0p01mbq', 'user', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 'haily@rabiloo.com', '$2b$10$dcyRtTmhCMm4avktzPj2jef/b3eVbR4p.BmGaNlauKEI.ul6l/a0i', 'user', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'hoaden@rabiloo.com', '$2b$10$Q0WQDzy11pDto6lGfnkqOOkY0E9UUfsihuALBelsSz/dJwhrxbTy.', 'user', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, 'admin2@rabiloo.com', '$2b$10$1R8dECK0GjPjWQVFYqSNpOQN.3WWZyk9nTbvab6Qg3b6qDJeIB1UW', 'user', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, 'nebano@rabiloo.com', '$2b$10$PPHsreCcAVnR0MErYbtWCO/LYJGB1MIDEUn6xraFTmqKJ2DNDMWKe', 'user', '2022-02-22 01:28:40', '2022-02-22 01:28:40');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vote`
+-- Table structure for table `votes`
 --
 
-CREATE TABLE `vote` (
-  `id` tinyint(3) NOT NULL,
-  `title` varchar(30) NOT NULL,
-  `total` int(11) NOT NULL DEFAULT 0,
-  `id_poll` tinyint(3) NOT NULL
+CREATE TABLE `votes` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `total` int(11) DEFAULT NULL,
+  `poll_id` int(11) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `vote`
+-- Dumping data for table `votes`
 --
 
-INSERT INTO `vote` (`id`, `title`, `total`, `id_poll`) VALUES
-(8, 'một', 0, 14),
-(9, 'hai', 2, 14),
-(10, 'ba', 0, 14),
-(11, 'Lựa chọn một', 0, 15),
-(12, 'Lựa chọn hai', 5, 15),
-(13, 'Lựa chọn ba', 1, 15),
-(14, 'Lựa chọn bốn', 6, 15),
-(17, 'Lựa chọn một', 1, 20),
-(18, 'Lựa chọn hai', 1, 20),
-(19, 'Lựa chọn ba', 1, 20),
-(20, 'Lựa chọn bốn 4.1', 0, 20),
-(21, 'Lựa chọn một', 1, 21),
-(22, 'Lựa chọn hai', 0, 21),
-(23, 'Lựa chọn một', 3, 22),
-(24, 'Lựa chọn hai', 2, 22),
-(25, 'Lựa chọn ba', 3, 22),
-(26, 'Lựa chọn bốn', 0, 22),
-(27, 'Lựa chọn một', 0, 23),
-(28, 'Lựa chọn hai', 0, 23),
-(29, 'Lựa chọn ba', 0, 23),
-(30, 'Lựa chọn bốn', 0, 23),
-(31, 'Lựa chọn 1', 4, 24),
-(32, 'Lựa chọn 2', 12, 24),
-(33, 'Lựa chọn 1', 0, 25),
-(34, 'Lựa chọn 2', 0, 25),
-(35, 'Lựa chọn 1', 0, 26),
-(36, 'Lựa chọn 2', 0, 26),
-(37, 'một', 0, 27),
-(38, 'hai', 0, 27),
-(39, 'Lựa chọn 1', 1, 28),
-(40, 'Lựa chọn 2', 1, 28),
-(41, 'Lựa chọn 3', 5, 28),
-(42, 'Lựa chọn 4', 1, 28),
-(43, 'Lựa chọn 1', 0, 29),
-(44, 'Lựa chọn 2', 0, 29),
-(45, 'Lựa chọn 1', 0, 30),
-(46, 'Lựa chọn 2', 0, 30),
-(47, 'Lựa chọn 1', 0, 31),
-(48, 'Lựa chọn 2', 0, 31),
-(49, 'Lựa chọn 1', 0, 32),
-(50, 'Lựa chọn 2', 0, 32),
-(51, 'Lựa chọn 1', 0, 33),
-(52, 'Lựa chọn 2', 0, 33),
-(53, 'Lựa chọn 1', 0, 34),
-(54, 'Lựa chọn 2', 0, 34),
-(55, 'một', 0, 35),
-(56, 'hai', 0, 35),
-(57, 'một', 0, 36),
-(58, 'hai', 0, 36),
-(59, 'một', 0, 37),
-(60, 'hai', 0, 37);
+INSERT INTO `votes` (`id`, `title`, `total`, `poll_id`, `createdAt`, `updatedAt`) VALUES
+(1, 'Lựa chọn một', 0, 1, '2022-02-22 02:41:01', '2022-02-22 05:02:22'),
+(2, 'Lựa chọn hai', 2, 1, '2022-02-22 02:41:01', '2022-02-22 04:55:53'),
+(3, 'Lựa chọn ba', 2, 1, '2022-02-22 02:41:01', '2022-02-22 05:02:20'),
+(4, 'Lựa chọn bốn', 1, 1, '2022-02-22 02:41:01', '2022-02-22 05:02:10'),
+(5, 'Lựa chọn một', 0, 2, '2022-02-22 02:41:28', '2022-02-22 02:41:28'),
+(6, 'Lựa chọn hai', 0, 2, '2022-02-22 02:41:28', '2022-02-22 02:41:28'),
+(7, 'Lựa chọn ba', 0, 2, '2022-02-22 02:41:28', '2022-02-22 02:41:28'),
+(8, 'Lựa chọn bốn', 0, 2, '2022-02-22 02:41:28', '2022-02-22 02:41:28'),
+(9, 'Lựa chọn một', 0, 3, '2022-02-22 02:41:47', '2022-02-22 02:41:47'),
+(10, 'Lựa chọn hai', 1, 3, '2022-02-22 02:41:47', '2022-02-22 03:07:01'),
+(11, 'Lựa chọn ba', 0, 3, '2022-02-22 02:41:47', '2022-02-22 02:41:47');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `is_voted`
+-- Indexes for table `is_votes`
 --
-ALTER TABLE `is_voted`
+ALTER TABLE `is_votes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `poll`
+-- Indexes for table `polls`
 --
-ALTER TABLE `poll`
+ALTER TABLE `polls`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- Indexes for table `users`
 --
-ALTER TABLE `user`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `vote`
+-- Indexes for table `votes`
 --
-ALTER TABLE `vote`
+ALTER TABLE `votes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -212,38 +171,28 @@ ALTER TABLE `vote`
 --
 
 --
--- AUTO_INCREMENT for table `is_voted`
+-- AUTO_INCREMENT for table `is_votes`
 --
-ALTER TABLE `is_voted`
-  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+ALTER TABLE `is_votes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `poll`
+-- AUTO_INCREMENT for table `polls`
 --
-ALTER TABLE `poll`
-  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+ALTER TABLE `polls`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `user`
-  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `vote`
+-- AUTO_INCREMENT for table `votes`
 --
-ALTER TABLE `vote`
-  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
-
-DELIMITER $$
---
--- Events
---
-CREATE DEFINER=`root`@`localhost` EVENT `change_status_end` ON SCHEDULE EVERY 1 SECOND STARTS '2022-02-17 13:27:28' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE poll SET status = 2 WHERE NOW() > end$$
-
-CREATE DEFINER=`root`@`localhost` EVENT `change_status_recent` ON SCHEDULE EVERY 1 SECOND STARTS '2022-02-17 13:56:12' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE poll set status = 1 WHERE NOW() <= end AND NOW() >= start$$
-
-DELIMITER ;
+ALTER TABLE `votes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

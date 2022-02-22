@@ -4,9 +4,11 @@ const date = require('date-and-time')
 
 const db = require("../models")
 const Polls = db.polls
+const Votes = db.votes
 
 //status = 1 -> recent, 2-> ended, 3 -> upcoming
 
+//get polls by status
 router.get('/polls', async (req, res) =>    {
     //http://localhost:5500/polls?status=3
     const status = req.query.status
@@ -21,28 +23,56 @@ router.get('/polls', async (req, res) =>    {
         poll.end = date.format(poll.end,'YYYY/MM/DD HH:mm:ss')
         poll.start = date.format(poll.start,'YYYY/MM/DD HH:mm:ss')
       })
-      Promise.all(promise)
+    Promise.all(promise)
 
     return res.json(polls)
 })
 
+//get polls information by id
 router.get('/polls/:id', async (req, res) =>    {
+    //get polls by poll_id
     //http://localhost:5500/polls/:id
     const id = req.params.id
-    console.log(id);
     const polls = await Polls.findAll({
         raw: true,
         where: {
             id: id
         }
     })
+    const votes = await Votes.findAll({
+        raw: true,
+        where: { poll_id: id}
+    })
 
-    return res.json(polls)
+    const max =  await Votes.max('total', {
+        where: {
+            poll_id: id
+        }
+    })
+    const most_vote = await Votes.findAll({
+        raw: true,
+        where: {
+            total: max
+        }
+    })
+
+    const promise = polls.map(poll => {
+        poll.end = date.format(poll.end,'YYYY/MM/DD HH:mm:ss')
+        poll.start = date.format(poll.start,'YYYY/MM/DD HH:mm:ss')
+      })
+    Promise.all(promise)
+
+    let result = {};
+    result.polls = polls[0]
+    result.votes = votes
+    result.most_vote = most_vote
+    return res.json(result)
 })
 
+//create poll
 router.post("/", async (req, res) => {
     const title = req.body.title
-    const totalVote = req.body.total_vote
+    const total_vote = req.body.total_vote
     const start = req.body.start
     const end = req.body.end
 
@@ -62,33 +92,42 @@ router.post("/", async (req, res) => {
     //     ]
     // }
 
-    connection.query(
-        `INSERT INTO poll (id, title, total_vote, start, end, status) VALUES (NULL, '${title}', '${totalVote}', '${start}', '${end}', '3')`,
-        (error, result) => {
-            
-            if(error) {
- 
-                return res.send({
-                    message: error
-                })
-            }
-             //result.insertId là id của poll
-            for(let i = 0; i < totalVote; i++) {
-                connection.query(
-                    `INSERT INTO vote (id, title, total, id_poll) VALUES (NULL, '${vote[i]}', '', '${result.insertId}')`,
-                    (error, result) => {
-                        if(error) {
-                            return res.send({
-                                message: error
-                        })
-                    }
-                })
-            } 
-            return res.status(200).send({
-                message: "Add poll successful"
-            })
-        }
-    )   
+    const poll = await Polls.create({
+        title: title,
+        total_vote: total_vote,
+        start: start,
+        end: end,
+        status: '3'
+    })
+    for(let i = 0; i < total_vote; i++) {
+        await Votes.create({
+            title: vote[i],
+            total: '0',
+            id_poll: poll.id
+        })
+    }
+
+    res.json({
+        message: "Add poll successfu"
+    })
+    
 })
 
+//delete polls by change poll status to 4
+router.delete("/", async (req, res) => {
+    const poll_id = req.body.poll_id
+    
+    try {
+        const poll = await Polls.update(
+            { status : '4' },
+            { where: { id: poll_id } }
+        )
+        return res.json({
+            message: "Delete poll success"
+        })
+    } catch (err) {
+        return res.send(error)
+    }
+    
+})
 module.exports = router

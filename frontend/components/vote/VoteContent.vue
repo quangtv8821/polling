@@ -55,12 +55,9 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      total: null,
       socket: null,
       checkbox: [],
       poll : {
-          title : null,
-          end: null
       },
       votes: []
     }
@@ -71,20 +68,24 @@ export default {
     }
   },
   created() {
-    this.connectToServer()
+    //this.connectToServer()
   },
   mounted() {
-    this.getTitleData()
-    this.getContentData()
+    this.getData()
+    
   },
   methods: {
-    getContentData() {
-      axios.get(`http://localhost:5500/polls/?id=${this.$route.query.id}`)
+    getData() {
+      console.log(this.checkbox)
+      axios.get(`http://localhost:5500/polls/${this.$route.query.id}`)
       .then(res => {
-        this.votes = res.data
+        this.poll = res.data.polls
+        this.votes = res.data.votes
         const promise = this.votes.map(vote => {
+          console.log(vote.id)
+          //insert bị lỗi
           this.insertUserVote(vote.id)
-          this.checkUserVote(vote.id)
+          this.getStatusVote(vote.id)
         })
         Promise.all(promise)
       })
@@ -92,73 +93,53 @@ export default {
         console.log(error);
       })
     },
-    getTitleData() {
-      axios.get(`http://localhost:5500/polls/poll-title/?id=${this.$route.query.id}`)
-      .then(res => {
-        this.poll.title = res.data[0].title
-        this.poll.end = res.data[0].end
-      })
-      .catch(error => {
-        console.log(error);
-      })
-    },
     changeVote(id, value) {
-      //this.getTotal(id)
       if(value == 1) {
-        this.$store.dispatch('vote/increaseVote', {vote_id: id})
-        this.$store.dispatch('vote/setStatusVote',{user_id : this.userId, vote_id : id})
-        this.socket.emit('increase', this.total)
-        console.log(this.total)
+        this.$store.dispatch('vote/increaseVote', {vote_id: id, user_id: this.userId})
+        // this.socket.emit('increase', this.total)
+        // console.log(this.total)
       }
       if(value == 0) {
-        this.$store.dispatch('vote/decreaseVote', {vote_id: id})
-        this.$store.dispatch('vote/setStatusVoteDecrease',{user_id : this.userId, vote_id : id})
-        this.socket.emit('decrease', this.total)
-        console.log(this.total)
+        this.$store.dispatch('vote/decreaseVote', {vote_id: id, user_id: this.userId})
+        // this.socket.emit('decrease', this.total)
+        // console.log(this.total)
       }
     },
     insertUserVote(id) {
-      //check if user isnt vote -> create a row in is_voted table
       const data = {
-        id_user : this.userId,
-        id_vote : id
-      }
-      axios.post(
-        `http://localhost:5500/is-voted/check-user`,
-        data
-      )
-      .then(res => {
-      })
-      .catch(error => {
-        console.log(error);
-      })
-    },
-    checkUserVote(id) {
-        //check if user isnt vote -> create a row in is_voted table
-        const data = {
-            id_user : this.userId,
-            id_vote : id
+            user_id : this.userId,
+            vote_id : id
         }
         axios.post(
-          `http://localhost:5500/is-voted/check-vote`,
+          `http://localhost:5500/vote/is-vote`,
           data
         )
         .then(res => {
-          this.checkbox.push(res.data.data)
+          
         })
         .catch(error => {
           console.log(error);
         })
     },
+    getStatusVote(id) {
+      const data = {
+          user_id : this.userId,
+          vote_id : id
+      }
+      axios.post(
+        `http://localhost:5500/vote`,
+        data
+      )
+      .then(res => {
+        this.checkbox.push(res.data.status)
+        console.log(res.data)
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
     connectToServer() {
       this.socket = io.connect(`http://localhost:5500/`, { secure: true })
-    },
-    getTotal(id) {
-      axios.post('http://localhost:5500/total', {vote_id: id})
-      .then(res => {
-        this.total = res.data["0"].total
-        console.log(this.total);
-      })
     }
   }
 }
