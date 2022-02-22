@@ -4,11 +4,10 @@ import Swal from 'sweetalert2'
 export default {
     createPoll({commit}, poll) {
         axios.post(
-            'http://localhost:5500/create-poll',
+            'http://localhost:5500/polls',
             poll
         )
         .then(res => {
-            console.log(res.data.message);
             if(res.data.message === "Add poll successful") {
                 Swal.fire({
                     title: 'Add poll success',
@@ -29,13 +28,11 @@ export default {
             console.log(error);
         })
     },
-    deletePoll({commit}, data) {
+    deletePoll({commit}, id) {
         //phai co tham so dau tien la commit de nhan data
-        axios.post(
-            'http://localhost:5500/delete-poll',
-            data
-        )
+        axios.delete(`http://localhost:5500/polls/${id}`)
         .then(res => {
+            console.log(res.data);
             if(res.data.message === "Delete poll success") {
                 Swal.fire({
                     title: 'Delete poll successful',

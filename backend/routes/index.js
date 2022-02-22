@@ -9,9 +9,14 @@ const Votes = db.votes
 //status = 1 -> recent, 2-> ended, 3 -> upcoming
 
 //get polls by status
-router.get('/polls', async (req, res) =>    {
+router.get('/', async (req, res) =>    {
     //http://localhost:5500/polls?status=3
     const status = req.query.status
+
+    const updateStatus = await Polls.update(            
+        { status : '4' },
+    )
+
     const polls = await Polls.findAll({
         raw: true,
         where: {
@@ -29,8 +34,7 @@ router.get('/polls', async (req, res) =>    {
 })
 
 //get polls information by id
-router.get('/polls/:id', async (req, res) =>    {
-    //get polls by poll_id
+router.get('/:id', async (req, res) =>    {
     //http://localhost:5500/polls/:id
     const id = req.params.id
     const polls = await Polls.findAll({
@@ -52,7 +56,8 @@ router.get('/polls/:id', async (req, res) =>    {
     const most_vote = await Votes.findAll({
         raw: true,
         where: {
-            total: max
+            total: max,
+            poll_id: id
         }
     })
 
@@ -108,15 +113,15 @@ router.post("/", async (req, res) => {
     }
 
     res.json({
-        message: "Add poll successfu"
+        message: "Add poll successful"
     })
     
 })
 
 //delete polls by change poll status to 4
-router.delete("/", async (req, res) => {
-    const poll_id = req.body.poll_id
-    
+router.delete("/:id", async (req, res) => {
+    const poll_id = req.params.id
+    console.log(poll_id);
     try {
         const poll = await Polls.update(
             { status : '4' },
@@ -125,7 +130,7 @@ router.delete("/", async (req, res) => {
         return res.json({
             message: "Delete poll success"
         })
-    } catch (err) {
+    } catch (error) {
         return res.send(error)
     }
     

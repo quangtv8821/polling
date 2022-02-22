@@ -72,22 +72,17 @@ export default {
   },
   mounted() {
     this.getData()
-    
   },
   methods: {
     getData() {
-      console.log(this.checkbox)
       axios.get(`http://localhost:5500/polls/${this.$route.query.id}`)
       .then(res => {
         this.poll = res.data.polls
         this.votes = res.data.votes
-        const promise = this.votes.map(vote => {
-          console.log(vote.id)
-          //insert bị lỗi
+        this.votes.map(vote => {
           this.insertUserVote(vote.id)
           this.getStatusVote(vote.id)
         })
-        Promise.all(promise)
       })
       .catch(error => {
         console.log(error);
@@ -109,17 +104,16 @@ export default {
       const data = {
             user_id : this.userId,
             vote_id : id
-        }
-        axios.post(
-          `http://localhost:5500/vote/is-vote`,
-          data
-        )
-        .then(res => {
-          
-        })
-        .catch(error => {
-          console.log(error);
-        })
+      }
+      axios.post(
+        `http://localhost:5500/vote/is-vote`,
+        data
+      )
+      .then(res => {
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
     getStatusVote(id) {
       const data = {
@@ -131,8 +125,7 @@ export default {
         data
       )
       .then(res => {
-        this.checkbox.push(res.data.status)
-        console.log(res.data)
+        this.checkbox.push(parseInt(res.data.status))
       })
       .catch(error => {
         console.log(error);

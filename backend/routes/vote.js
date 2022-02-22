@@ -62,7 +62,7 @@ router.post('/is-vote', async (req, res) => {
         await Is_votes.create({
             user_id: user_id,
             vote_id: vote_id,
-            status: 0
+            status: '0'
         })
         return res.json({
             message: "update is voted table"
@@ -78,15 +78,23 @@ router.post('/', async (req, res) => {
     const user_id = req.body.user_id
     const vote_id = req.body.vote_id
 
-    const is_votes = await Is_votes.findAll({
+    const is_votes = await Is_votes.findAll(
+    {
         raw: true,
         where: {
             user_id: user_id,
-            vote_id: vote_id
+            vote_id: vote_id,
+            status: '1'
         }
     })
+    if(is_votes.length == 0) {
+        return res.json({
+            status: '0'
+        })
+    }
     return res.json({
-        status: is_votes[0].status
+        status: '1',
+        data: is_votes
     })
 })
 

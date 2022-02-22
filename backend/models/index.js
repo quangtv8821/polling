@@ -16,6 +16,11 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+db.polls = require("./polls.model.js")(sequelize, Sequelize)
+db.users = require("./user.model.js")(sequelize, Sequelize)
+db.votes = require("./vote.model.js")(sequelize, Sequelize)
+db.is_votes = require("./is_vote.model.js")(sequelize, Sequelize)
+
 const connection = async () => {
     try {
         await sequelize.authenticate();
@@ -25,8 +30,5 @@ const connection = async () => {
     }
 }
 connection()
-db.polls = require("./polls.model.js")(sequelize, Sequelize)
-db.users = require("./user.model.js")(sequelize, Sequelize)
-db.votes = require("./vote.model.js")(sequelize, Sequelize)
-db.is_votes = require("./is_vote.model.js")(sequelize, Sequelize);
+
 module.exports = db;

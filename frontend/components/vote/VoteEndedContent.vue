@@ -44,7 +44,7 @@
                     </thead>
                     <tbody>
                     <tr
-                        v-for="item in winner"
+                        v-for="item in most_vote"
                         :key="item.id"
                     >
                         <td>{{item.title}}</td>
@@ -59,52 +59,27 @@
 <script>
 import axios from 'axios'
 export default {
-  data() {
-      return {
-        poll : {
-          title : null,
-          end: null
-        },
-        votes: [],
-        winner: []
-      }
-  },
-  mounted() {
-    this.getTitleData()
-    this.getContentData()
-    this.getMostVote()
-  },
-  methods: {
-    getContentData() {
-        axios.get(`http://localhost:5500/polls/?id=${this.$route.query.id}`)
-        .then(res => {
-            this.votes = res.data
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    },
-    getTitleData() {
-        axios.get(`http://localhost:5500/polls/poll-title/?id=${this.$route.query.id}`)
-        .then(res => {
-            this.poll.title = res.data[0].title
-            this.poll.end = res.data[0].end
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    },
-    getMostVote() {
-        const obj = {
-            id: this.$route.query.id
+    data() {
+        return {
+            poll : {},
+            votes: [],
+            most_vote: []
         }
-        axios.post(`http://localhost:5500/polls/most-vote`, obj)
-        .then(res => {
-            this.winner = res.data
-        })
-        .catch(error => {
-            console.log(error);
-        })
+    },
+    mounted() {
+        this.getData()
+    },
+    methods: {
+        getData() {
+            axios.get(`http://localhost:5500/polls/${this.$route.query.id}`)
+            .then(res => {
+                this.poll = res.data.polls
+                this.votes = res.data.votes
+                this.most_vote = res.data.most_vote
+            })
+            .catch(error => {
+                console.log(error);
+            })
         },
     }
 }

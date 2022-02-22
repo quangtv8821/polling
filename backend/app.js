@@ -18,8 +18,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //use route
-app.use('/', indexRoute)
-app.use('/login',loginRoute)
+app.use('/', authMiddleWare.authJwt(), (req, res) => {
+  return res.send('Hi')
+})
+app.use('/polls', indexRoute)
+app.use('/login', loginRoute)
 app.use('/register', registerRoute)
 app.use('/vote' , voteRoute)
 

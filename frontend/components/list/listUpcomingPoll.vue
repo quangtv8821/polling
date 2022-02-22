@@ -41,7 +41,7 @@ import Swal from 'sweetalert2'
     methods: {
         deletePoll(id) {
             if(this.users == "admin") {
-                this.$store.dispatch('poll/deletePoll', {poll_id: id})
+                this.$store.dispatch('poll/deletePoll', id)
             } else {
                 Swal.fire({
                     title: 'Only admin can delete poll',
