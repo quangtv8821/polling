@@ -47,54 +47,33 @@ router.put('/decrease', async (req, res) =>    {
 })
 
 //get is vote
-router.post('/is-vote', async (req, res) => {
+
+router.post('/', async (req, res) => {
     const user_id = req.body.user_id
     const vote_id = req.body.vote_id
 
-    const is_votes = await Is_votes.findAll({
+    console.log(vote_id);
+    const is_votes = await Is_votes.findAll(
+    {
         raw: true,
         where: {
             user_id: user_id,
             vote_id: vote_id
         }
     })
-    if(is_votes.length == 0) {
-        await Is_votes.create({
+    if(is_votes.length === 0 ) {
+        const createRow = await Is_votes.create({
             user_id: user_id,
             vote_id: vote_id,
             status: '0'
         })
         return res.json({
-            message: "update is voted table"
+            status: createRow[0].status
         })
-    }
+    } 
     return res.json({
-        message: "user has been voted"
-    })
-})
-
-//get status of user vote
-router.post('/', async (req, res) => {
-    const user_id = req.body.user_id
-    const vote_id = req.body.vote_id
-
-    const is_votes = await Is_votes.findAll(
-    {
-        raw: true,
-        where: {
-            user_id: user_id,
-            vote_id: vote_id,
-            status: '1'
-        }
-    })
-    if(is_votes.length == 0) {
-        return res.json({
-            status: '0'
-        })
-    }
-    return res.json({
-        status: '1',
-        data: is_votes
+        id: is_votes[0].id,
+        status: is_votes[0].status
     })
 })
 

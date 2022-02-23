@@ -10,11 +10,9 @@
 </template>
 
 <script>
-  export default {
-    middleware: 'auth',
-    data () {
-      return {
-      }
-    },
+export default {
+  mounted() {
+    this.$store.dispatch('user/authJwt')
   }
+}
 </script>

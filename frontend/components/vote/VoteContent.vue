@@ -57,8 +57,7 @@ export default {
     return {
       socket: null,
       checkbox: [],
-      poll : {
-      },
+      poll : {},
       votes: []
     }
   },
@@ -76,13 +75,21 @@ export default {
   methods: {
     getData() {
       axios.get(`http://localhost:5500/polls/${this.$route.query.id}`)
-      .then(res => {
+      .then(res =>  {
         this.poll = res.data.polls
         this.votes = res.data.votes
-        this.votes.map(vote => {
-          this.insertUserVote(vote.id)
+        // const promise = this.votes.map(vote => {
+        //   this.getStatusVote(vote.id)
+        // })
+        // Promise.all(promise)
+        const results = await Promise.all(this.votes.map(vote => {
           this.getStatusVote(vote.id)
-        })
+        }))
+        console.log(results);
+        // console.log(this.getStatusVote(1))
+        // console.log(this.getStatusVote(2))
+        // console.log(this.getStatusVote(3))
+        // console.log(this.getStatusVote(4))
       })
       .catch(error => {
         console.log(error);
@@ -91,45 +98,24 @@ export default {
     changeVote(id, value) {
       if(value == 1) {
         this.$store.dispatch('vote/increaseVote', {vote_id: id, user_id: this.userId})
-        // this.socket.emit('increase', this.total)
+        this.socket.emit('increase', '1')
         // console.log(this.total)
       }
       if(value == 0) {
         this.$store.dispatch('vote/decreaseVote', {vote_id: id, user_id: this.userId})
-        // this.socket.emit('decrease', this.total)
+        this.socket.emit('decrease', '0')
         // console.log(this.total)
       }
     },
-    insertUserVote(id) {
-      const data = {
-            user_id : this.userId,
-            vote_id : id
-      }
-      axios.post(
-        `http://localhost:5500/vote/is-vote`,
-        data
-      )
-      .then(res => {
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    },
-    getStatusVote(id) {
-      const data = {
+    async getStatusVote(id) {
+      console.log(id)
+      return await axios.post(
+        `http://localhost:5500/vote`,
+        {
           user_id : this.userId,
           vote_id : id
-      }
-      axios.post(
-        `http://localhost:5500/vote`,
-        data
+        }
       )
-      .then(res => {
-        this.checkbox.push(parseInt(res.data.status))
-      })
-      .catch(error => {
-        console.log(error);
-      })
     },
     connectToServer() {
       this.socket = io.connect(`http://localhost:5500/`, { secure: true })

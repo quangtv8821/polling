@@ -18,8 +18,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //use route
-app.use('/', authMiddleWare.authJwt(), (req, res) => {
-  return res.send('Hi')
+app.use('/user', authMiddleWare.authJwt(), (req, res) => {
+  return res.send('login')
 })
 app.use('/polls', indexRoute)
 app.use('/login', loginRoute)
@@ -35,22 +35,22 @@ const io = require('socket.io')(server , {
   }
 });
 
-const db = require("./models/index");
-db.sequelize.sync();
+const db = require("./models/index")
+db.sequelize.sync()
 
 io.on('connect', socket => {
-  console.log('user connected')
+  //console.log('user connected')
   socket.on('disconnect', () => {
-    console.log("user disconnected");
+    console.log("user disconnected")
   })
   socket.on('increase', (msg) => {
-    console.log('message increase: ' + msg);
-    io.emit('increase', msg);
+    console.log('message increase: ' + msg)
+    io.emit('increase', msg)
   });
   socket.on('decrease', (msg) => {
-    console.log('message decrease: ' + msg);
-  });
-});
+    console.log('message decrease: ' + msg)
+  })
+})
 
 server.listen(port, () => {
     console.log(`App listen on ${port}`);

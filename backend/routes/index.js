@@ -13,9 +13,12 @@ router.get('/', async (req, res) =>    {
     //http://localhost:5500/polls?status=3
     const status = req.query.status
 
-    const updateStatus = await Polls.update(            
-        { status : '4' },
-    )
+    // const updateStatus = await Polls.update(            
+    //     { status : '2' },
+    //     {where: {
+            
+    //     }}
+    // )
 
     const polls = await Polls.findAll({
         raw: true,

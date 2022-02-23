@@ -10,12 +10,15 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-  middleware: 'auth',
   data () {
     return {
       tab: null
     }
+  },
+  mounted() {
+    this.$store.dispatch('user/authJwt')
   }
 }
 </script>

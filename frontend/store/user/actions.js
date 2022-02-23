@@ -12,7 +12,7 @@ export default {
                 user.token = res.data.token
                 user.id = res.data.id
                 commit('addUser', user)
-                localStorage.setItem('user_token', res.data.token)
+                window.localStorage.setItem('user_token', res.data.token)
                 this.$router.push('/')
             }
         })
@@ -51,5 +51,12 @@ export default {
         .catch(error => {
             console.log(error);
         })
+    },
+    async authJwt({commit}) {
+        axios.defaults.headers.common['authorization'] = 'Bearer ' + localStorage.getItem('user_token')
+        const login = await axios.get('http://localhost:5500/user')
+        if(login.data.message === 'Unauthorized!') {
+            this.$router.push("/login")
+        }
     }
 }
