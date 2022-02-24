@@ -1,3 +1,5 @@
 export default function ({ store, redirect }) {
-    // store.dispatch('user/authJwt')
-}
+    if (!store.state.user.user) {
+        return redirect('/login')
+    }
+} 

@@ -35,11 +35,11 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/axios', 'nuxt-socket-io'],
+  modules: ['@nuxtjs/axios'],
 
   io: {
     server: {
-    // @ts-ignore
+      // @ts-ignore
       cors: {
         credentials: true, // "Configures the Access-Control-Allow-Credentials CORS header. Set to true to pass the header, otherwise it is omitted."
         origin: ['https://nuxt-socket-io.netlify.app', '*'] // Array of whitelisted origin(s)

@@ -12,7 +12,7 @@
 <script>
 export default {
   mounted() {
-    this.$store.dispatch('user/authJwt')
-  }
-}
+    this.$store.dispatch("user/authJwt");
+  },
+};
 </script>

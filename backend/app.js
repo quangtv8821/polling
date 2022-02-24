@@ -24,11 +24,11 @@ app.use('/user', authMiddleWare.authJwt(), (req, res) => {
 app.use('/polls', indexRoute)
 app.use('/login', loginRoute)
 app.use('/register', registerRoute)
-app.use('/vote' , voteRoute)
+app.use('/vote', voteRoute)
 
 const port = process.env.PORT || 5500
 
-const io = require('socket.io')(server , {
+const io = require('socket.io')(server, {
   cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"]
@@ -39,19 +39,14 @@ const db = require("./models/index")
 db.sequelize.sync()
 
 io.on('connect', socket => {
-  //console.log('user connected')
   socket.on('disconnect', () => {
     console.log("user disconnected")
   })
-  socket.on('increase', (msg) => {
-    console.log('message increase: ' + msg)
-    io.emit('increase', msg)
+  socket.on('data', (msg) => {
+    io.emit('data', msg)
   });
-  socket.on('decrease', (msg) => {
-    console.log('message decrease: ' + msg)
-  })
 })
 
 server.listen(port, () => {
-    console.log(`App listen on ${port}`);
+  console.log(`App listen on ${port}`);
 })

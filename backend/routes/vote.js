@@ -52,7 +52,6 @@ router.post('/', async (req, res) => {
     const user_id = req.body.user_id
     const vote_id = req.body.vote_id
 
-    console.log(vote_id);
     const is_votes = await Is_votes.findAll(
     {
         raw: true,
@@ -61,19 +60,34 @@ router.post('/', async (req, res) => {
             vote_id: vote_id
         }
     })
+    console.log(is_votes);
     if(is_votes.length === 0 ) {
         const createRow = await Is_votes.create({
             user_id: user_id,
             vote_id: vote_id,
             status: '0'
         })
+        console.log("123");
         return res.json({
-            status: createRow[0].status
+            status: 0
         })
     } 
     return res.json({
-        id: is_votes[0].id,
         status: is_votes[0].status
+    })
+})
+
+router.get('/:id', async (req, res) => {
+    const vote_id = req.params.id
+    
+    const votes = await Votes.findAll({
+        raw: true,
+        where: {
+            id: vote_id
+        }
+    })
+    return res.json({
+        total: votes[0].total
     })
 })
 

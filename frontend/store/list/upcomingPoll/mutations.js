@@ -1,5 +1,5 @@
 export default {
-    ADD_POLLS(state, polls) {
-        state.polls = polls
-    }
+  ADD_POLLS(state, polls) {
+    state.polls = polls
+  }
 }

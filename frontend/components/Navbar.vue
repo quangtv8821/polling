@@ -1,8 +1,6 @@
 <template>
   <v-card>
-    <v-toolbar  
-      color="main"
-      class="white--text">
+    <v-toolbar color="main" class="white--text">
       <v-app-bar-nav-icon color="white"></v-app-bar-nav-icon>
 
       <v-toolbar-title>Polling realtime app</v-toolbar-title>
@@ -23,7 +21,7 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 export default {
   computed: {
     users() {
@@ -32,23 +30,23 @@ export default {
   },
   methods: {
     redirectCreatVote() {
-      if(this.users == "admin") {
-        this.$router.push('/create-poll')
+      if (this.users == "admin") {
+        this.$router.push("/create-poll");
       } else {
         Swal.fire({
-            title: 'Only admin can create poll',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        })
+          title: "Only admin can create poll",
+          showClass: {
+            popup: "animate__animated animate__fadeInDown",
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOutUp",
+          },
+        });
       }
     },
     redirectHome() {
-      this.$router.push('/')
-    }
-  }
-}
+      this.$router.push("/");
+    },
+  },
+};
 </script>

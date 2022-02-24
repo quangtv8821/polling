@@ -3,20 +3,20 @@
     <Navbar />
     <!-- <Header /> -->
     <v-container>
-        <v-row align="center">
-            <v-col align="center">
-                <CreatePoll />
-            </v-col>
-        </v-row>
+      <v-row align="center">
+        <v-col align="center">
+          <CreatePoll />
+        </v-col>
+      </v-row>
     </v-container>
     <Footer />
   </v-app>
 </template>
 
 <script>
-  export default {
-    mounted() {
-      this.$store.dispatch('user/authJwt')
-    }
-  }
+export default {
+  mounted() {
+    this.$store.dispatch("user/authJwt");
+  },
+};
 </script>

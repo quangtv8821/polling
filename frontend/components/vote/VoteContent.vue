@@ -7,23 +7,12 @@
 
     <v-card-subtitle class="font-weight-bold" v-text="`End in: ` + poll.end" />
 
-    <v-card-text class="text-h4 font-weight-bold">{{poll.title}}</v-card-text>
+    <v-card-text class="text-h4 font-weight-bold">{{ poll.title }}</v-card-text>
 
     <v-card-actions>
-      <v-list
-        color="main"
-        two-line
-        flat
-        width="1200"
-        class="mt-8"
-      >
-        <v-list-item-group
-          multiple
-        >
-          <v-list-item 
-              v-for="(item, index) in votes"
-              :key="item.choice"
-          >
+      <v-list color="main" two-line flat width="1200" class="mt-8">
+        <v-list-item-group multiple>
+          <v-list-item v-for="(item, index) in votes" :key="item.choice">
             <template>
               <v-list-item-action>
                 <v-checkbox
@@ -35,91 +24,94 @@
               </v-list-item-action>
 
               <v-list-item-content>
-                  <v-list-item-title v-text="item.title"></v-list-item-title>
+                <v-list-item-title v-text="item.title" />
               </v-list-item-content>
 
               <v-list-item-action>
-                <v-list-item-action-text v-text="item.total"></v-list-item-action-text>
+                <v-list-item-action-text
+                  v-text="item.total"
+                ></v-list-item-action-text>
               </v-list-item-action>
             </template>
           </v-list-item>
         </v-list-item-group>
-        </v-list>
+      </v-list>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import { io } from "socket.io-client"
-import axios from 'axios'
+import { io } from "socket.io-client";
+import axios from "axios";
 export default {
   data() {
     return {
       socket: null,
       checkbox: [],
-      poll : {},
-      votes: []
-    }
+      poll: {},
+      votes: null,
+    };
   },
   computed: {
     userId() {
       return this.$store.state.user.user.id
-    }
+    },
   },
   created() {
-    //this.connectToServer()
+    this.connectToServer()
   },
   mounted() {
     this.getData()
   },
   methods: {
-    getData() {
-      axios.get(`http://localhost:5500/polls/${this.$route.query.id}`)
-      .then(res =>  {
-        this.poll = res.data.polls
-        this.votes = res.data.votes
-        // const promise = this.votes.map(vote => {
-        //   this.getStatusVote(vote.id)
-        // })
-        // Promise.all(promise)
-        const results = await Promise.all(this.votes.map(vote => {
-          this.getStatusVote(vote.id)
-        }))
-        console.log(results);
-        // console.log(this.getStatusVote(1))
-        // console.log(this.getStatusVote(2))
-        // console.log(this.getStatusVote(3))
-        // console.log(this.getStatusVote(4))
-      })
-      .catch(error => {
-        console.log(error);
-      })
+    async getData() {
+      const res = await axios.get(`http://localhost:5500/polls/${this.$route.query.id}`)
+
+      this.poll = res.data.polls
+      this.votes = res.data.votes
+      this.mapStatusVote()
+      this.socket.emit("data", this.votes)
     },
-    changeVote(id, value) {
-      if(value == 1) {
-        this.$store.dispatch('vote/increaseVote', {vote_id: id, user_id: this.userId})
-        this.socket.emit('increase', '1')
-        // console.log(this.total)
+    async changeVote(id, value) {
+      if (value == 1) {
+        await this.$store.dispatch("vote/increaseVote", {
+          vote_id: id,
+          user_id: this.userId,
+        });
       }
-      if(value == 0) {
-        this.$store.dispatch('vote/decreaseVote', {vote_id: id, user_id: this.userId})
-        this.socket.emit('decrease', '0')
-        // console.log(this.total)
+      if (value == 0) {
+        await this.$store.dispatch("vote/decreaseVote", {
+          vote_id: id,
+          user_id: this.userId,
+        });
       }
+      Promise.all([
+        this.getData()
+      ])
+    },
+    async mapStatusVote() {
+      const data = await Promise.all(
+        this.votes.map((vote) => this.getStatusVote(vote.id))
+      );
+      this.checkbox = data.map((item) => item.data.status);
     },
     async getStatusVote(id) {
-      console.log(id)
-      return await axios.post(
-        `http://localhost:5500/vote`,
-        {
-          user_id : this.userId,
-          vote_id : id
-        }
-      )
+      return await axios.post(`http://localhost:5500/vote`, {
+        user_id: this.userId,
+        vote_id: id,
+      });
+    },
+    async getTotalVote(id) {
+      const total = await axios.get(`http://localhost:5500/vote/${id}`)
+      return total.data.total
     },
     connectToServer() {
-      this.socket = io.connect(`http://localhost:5500/`, { secure: true })
-    }
-  }
-}
+      this.socket = io.connect(`http://localhost:5500/`, { secure: true });
+      this.socket.on('data', msg => {
+        // console.log(msg);
+        this.votes = msg
+      })
+    },
+  },
+};
 </script>
