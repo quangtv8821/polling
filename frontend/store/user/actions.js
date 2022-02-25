@@ -12,7 +12,6 @@ export default {
         user.id = res.data.id
         commit('addUser', user)
         commit('addAuth')
-        // console.log(this.$auth.state.loggedIn);
         this.$router.push("/");
       }
     } catch (e) {

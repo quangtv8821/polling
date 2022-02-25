@@ -11,11 +11,16 @@
 
 <script>
 export default {
-  middleware: 'auth',
+  middleware: 'guest',
   data() {
     return {
       tab: null,
     };
+  },
+  computed: {
+    auth() {
+      return this.$auth.$storage._state["_token.local"]
+    }
   }
 };
 </script>
