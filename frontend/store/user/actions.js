@@ -1,28 +1,27 @@
 import axios from "axios"
 import Swal from 'sweetalert2'
 export default {
-  login({ commit }, user) {
-    axios.post(
-      'http://localhost:5500/login',
-      user
-    )
-      .then(res => {
-        if (res.data.message === "logged in") {
-          user.role = res.data.role
-          user.token = res.data.token
-          user.id = res.data.id
-          commit('addUser', user)
-          window.localStorage.setItem('user_token', res.data.token)
-          this.$router.push('/')
-        }
+  async login({ commit }, user) {
+    try {
+      const res = await this.$auth.loginWith("local", {
+        data: user
       })
-      .catch(error => {
-        console.log(error);
-      })
+      if (res.data.message == "logged in") {
+        user.role = res.data.role
+        user.token = res.data.token
+        user.id = res.data.id
+        commit('addUser', user)
+        commit('addAuth')
+        // console.log(this.$auth.state.loggedIn);
+        this.$router.push("/");
+      }
+    } catch (e) {
+      this.error = e.response.data.message;
+    }
   },
-  logout({ commit }) {
+  async logout({ commit }) {
     commit("clearState")
-    localStorage.removeItem("user_token")
+    await this.$auth.logout();
     this.$router.push('/login')
   },
   register({ commit }, user) {

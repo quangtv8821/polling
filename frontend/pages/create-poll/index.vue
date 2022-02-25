@@ -15,8 +15,9 @@
 
 <script>
 export default {
+  middleware: 'auth',
   mounted() {
-    this.$store.dispatch("user/authJwt");
+    //this.$store.dispatch("user/authJwt");
   },
 };
 </script>

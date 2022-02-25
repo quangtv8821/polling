@@ -1,3 +1,9 @@
 export default () => ({
-  user: null
+  user: {
+    id: null,
+    email: null,
+    password: null,
+    token: null,
+    role: null
+  }
 })

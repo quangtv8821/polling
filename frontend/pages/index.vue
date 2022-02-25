@@ -16,14 +16,6 @@ export default {
     return {
       tab: null,
     };
-  },
-  computed: {
-    users() {
-      return this.$store.state.user.user.role;
-    },
-  },
-  mounted() {
-    this.$store.dispatch("user/authJwt");
-  },
+  }
 };
 </script>

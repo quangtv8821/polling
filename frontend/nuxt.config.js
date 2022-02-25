@@ -35,7 +35,10 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/axios'],
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
+  ],
 
   io: {
     server: {
@@ -52,6 +55,22 @@ export default {
 
   axios: {
     baseURL: 'http://localhost:5500/'
+  },
+
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          required: false,
+          type: false
+        },
+        endpoints: {
+          login: { url: '/login', method: 'post' },
+          user: { url: '/user', method: 'get' },
+          logout: false
+        }
+      }
+    }
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -73,7 +92,4 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
-  // router: {
-  //   middleware: ['auth']
-  // },
 }

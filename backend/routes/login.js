@@ -18,8 +18,10 @@ router.post('/', async (req, res) => {
     raw: true
   })
 
-  if (result.length < 0) {
-    return res.send({
+  //console.log(result);
+
+  if (result.length == 0) {
+    return res.json({
       message: "Wrong user information, please check again!"
     })
   }
@@ -35,7 +37,7 @@ router.post('/', async (req, res) => {
       }
 
       if (results) {
-        const token = jwt.sign({ id: result[0].id }, process.env.SECRET, { expiresIn: '15m' })
+        const token = jwt.sign({ id: result[0].id }, process.env.SECRET, { expiresIn: '30s' })
         return res.json({
           message: "logged in",
           role: result[0]['role'],
@@ -47,10 +49,6 @@ router.post('/', async (req, res) => {
         message: "Wrong user information, please check again!"
       })
     })
-})
-
-router.get('/', async (req, res) => {
-  return res.send(sequelize.fn('NOW'))
 })
 
 module.exports = router

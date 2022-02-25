@@ -2,7 +2,10 @@ export default {
   addUser(state, { id, email, password, role, token }) {
     state.user = { id: id, email: email, password: password, role: role, token: token }
   },
+  addAuth(state) {
+    this.$auth.state.loggedIn = true
+  },
   clearState(state) {
-    state.user = null
+    state.user = { id: null, email: null, password: null, role: null, token: null }
   }
 }
