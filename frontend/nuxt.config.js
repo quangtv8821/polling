@@ -59,10 +59,6 @@ export default {
   auth: {
     strategies: {
       local: {
-        token: {
-          required: false,
-          type: false
-        },
         endpoints: {
           login: { url: '/login', method: 'post' },
           user: { url: '/user', method: 'get' },

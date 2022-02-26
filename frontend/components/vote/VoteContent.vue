@@ -53,8 +53,8 @@ export default {
     };
   },
   computed: {
-    userId() {
-      return this.$store.state.user.user.id
+    user() {
+      return this.$auth.$storage.getLocalStorage('user')
     },
   },
   created() {
@@ -76,13 +76,13 @@ export default {
       if (value == 1) {
         await this.$store.dispatch("vote/increaseVote", {
           vote_id: id,
-          user_id: this.userId,
+          user_id: this.user.id,
         });
       }
       if (value == 0) {
         await this.$store.dispatch("vote/decreaseVote", {
           vote_id: id,
-          user_id: this.userId,
+          user_id: this.user.id,
         });
       }
       Promise.all([
@@ -97,7 +97,7 @@ export default {
     },
     async getStatusVote(id) {
       return await axios.post(`http://localhost:5500/vote`, {
-        user_id: this.userId,
+        user_id: this.user.id,
         vote_id: id,
       });
     },
@@ -108,7 +108,6 @@ export default {
     connectToServer() {
       this.socket = io.connect(`http://localhost:5500/`, { secure: true });
       this.socket.on('data', msg => {
-        // console.log(msg);
         this.votes = msg
       })
     },

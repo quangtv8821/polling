@@ -10,7 +10,7 @@ const authJwt = () => {
       if (!token) {
         return res.status(403).send({ message: "No token provided!" });
       }
-      jwt.verify(token, process.env.SECRET, (err, decoded) => {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
           return res.json({ message: "Unauthorized!" });
         }

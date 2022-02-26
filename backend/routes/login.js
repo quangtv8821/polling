@@ -11,16 +11,13 @@ router.post('/', async (req, res) => {
   const email = req.body.email
   const password = req.body.password
 
-  const result = await Users.findAll({
+  const result = await Users.findOne({
     where: {
       email: email
     },
-    raw: true
   })
-
-  //console.log(result);
-
-  if (result.length == 0) {
+  console.log(result.dataValues.password);
+  if (!result) {
     return res.json({
       message: "Wrong user information, please check again!"
     })
@@ -28,7 +25,7 @@ router.post('/', async (req, res) => {
 
   bcrypt.compare(
     password,
-    result[0].password,
+    result.dataValues.password,
     (error, results) => {
       if (error) {
         return res.send({
@@ -37,11 +34,11 @@ router.post('/', async (req, res) => {
       }
 
       if (results) {
-        const token = jwt.sign({ id: result[0].id }, process.env.SECRET, { expiresIn: '30s' })
+        const token = jwt.sign({ id: result.dataValues.id }, process.env.JWT_SECRET, { expiresIn: '30s' })
         return res.json({
           message: "logged in",
-          role: result[0]['role'],
-          id: result[0]['id'],
+          role: result.dataValues.role,
+          id: result.dataValues.id,
           token: token
         })
       }

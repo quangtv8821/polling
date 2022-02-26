@@ -8,7 +8,6 @@ export const getters = {
 
 //actions
 export const actions = {
-
 }
 
 //mutations

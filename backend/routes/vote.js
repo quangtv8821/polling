@@ -3,7 +3,7 @@ const router = express.Router()
 
 const db = require("../models")
 const Votes = db.votes
-const Is_votes = db.is_votes
+const IsVotes = db.is_votes
 
 router.put('/increase', async (req, res) =>    {
     const vote_id = req.body.vote_id
@@ -14,7 +14,7 @@ router.put('/increase', async (req, res) =>    {
         where: { id: vote_id } 
     })
 
-    const is_votes = await Is_votes.update(
+    const is_votes = await IsVotes.update(
         {status: '1',},
         {where: {
             user_id: user_id,
@@ -34,7 +34,7 @@ router.put('/decrease', async (req, res) =>    {
         by: 1, 
         where: { id: vote_id } 
     })
-    const is_votes = await Is_votes.update(
+    const is_votes = await IsVotes.update(
         {status: '0',},
         {where: {
             user_id: user_id,
@@ -52,42 +52,38 @@ router.post('/', async (req, res) => {
     const user_id = req.body.user_id
     const vote_id = req.body.vote_id
 
-    const is_votes = await Is_votes.findAll(
+    const is_votes = await IsVotes.findOne(
     {
-        raw: true,
         where: {
             user_id: user_id,
             vote_id: vote_id
         }
     })
-    console.log(is_votes);
-    if(is_votes.length === 0 ) {
-        const createRow = await Is_votes.create({
+    if(is_votes === null ) {
+        const createRow = await IsVotes.create({
             user_id: user_id,
             vote_id: vote_id,
             status: '0'
         })
-        console.log("123");
         return res.json({
             status: 0
         })
     } 
     return res.json({
-        status: is_votes[0].status
+        status: is_votes.dataValues.status
     })
 })
 
 router.get('/:id', async (req, res) => {
     const vote_id = req.params.id
     
-    const votes = await Votes.findAll({
-        raw: true,
+    const votes = await Votes.findOne({
         where: {
             id: vote_id
         }
     })
     return res.json({
-        total: votes[0].total
+        total: votes.dataValues.total
     })
 })
 

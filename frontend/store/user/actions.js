@@ -11,7 +11,6 @@ export default {
         user.token = res.data.token
         user.id = res.data.id
         commit('addUser', user)
-        commit('addAuth')
         this.$router.push("/");
       }
     } catch (e) {
@@ -19,7 +18,7 @@ export default {
     }
   },
   async logout({ commit }) {
-    commit("clearState")
+    commit("clearStorage")
     await this.$auth.logout();
     this.$router.push('/login')
   },

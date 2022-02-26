@@ -31,8 +31,8 @@ import Swal from 'sweetalert2'
         polls() {
             return this.$store.state.list.upcomingPoll.polls
         },
-        users() {
-            return this.$store.state.user.user.role
+        user() {
+            return this.$auth.$storage.getLocalStorage('user')
         }
     },
     mounted () {
@@ -40,7 +40,7 @@ import Swal from 'sweetalert2'
     },
     methods: {
         deletePoll(id) {
-            if(this.users == "admin") {
+            if(this.user.role == "admin") {
                 this.$store.dispatch('poll/deletePoll', id)
             } else {
                 Swal.fire({

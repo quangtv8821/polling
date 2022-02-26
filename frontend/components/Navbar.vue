@@ -3,7 +3,9 @@
     <v-toolbar color="main" class="white--text">
       <v-app-bar-nav-icon color="white"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Polling realtime app - {{email}}</v-toolbar-title>
+      <v-toolbar-title>Polling realtime app</v-toolbar-title>
+
+      <v-toolbar-title class="ml-6">{{email}}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -23,17 +25,22 @@
 <script>
 import Swal from "sweetalert2";
 export default {
-  computed: {
-    users() {
-      return this.$store.state.user.user.role
-    },
-    email() {
-      return this.$store.state.user.user.email
+  data() {
+    return {
+      email: null
     }
+  },
+  computed: {
+    user() {
+      return this.$auth.$storage.getLocalStorage('user')
+    }
+  },
+  mounted() {
+    this.email = this.user.email
   },
   methods: {
     redirectCreatVote() {
-      if (this.users == "admin") {
+      if (this.user.role == "admin") {
         this.$router.push("/create-poll");
       } else {
         Swal.fire({

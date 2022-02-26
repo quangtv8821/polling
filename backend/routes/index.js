@@ -13,25 +13,20 @@ router.get('/', async (req, res) => {
   //http://localhost:5500/polls?status=3
   const status = req.query.status
 
-  // const updateStatus = await Polls.update(            
-  //     { status : '2' },
-  //     {where: {
-
-  //     }}
-  // )
-
   const polls = await Polls.findAll({
-    raw: true,
     where: {
       status: status
     }
   })
 
-  const promise = polls.map(poll => {
-    poll.end = date.format(poll.end, 'YYYY/MM/DD HH:mm:ss')
-    poll.start = date.format(poll.start, 'YYYY/MM/DD HH:mm:ss')
-  })
-  Promise.all(promise)
+  for (let item of polls) {
+    item.dataValues.end = date.format(item.dataValues.end, 'YYYY/MM/DD HH:mm:ss')
+    item.dataValues.start = date.format(item.dataValues.start, 'YYYY/MM/DD HH:mm:ss')
+  }
+  // polls.map(item => {
+  //   date.format(item.dataValues.end, 'YYYY/MM/DD HH:mm:ss')
+  //   date.format(item.dataValues.start, 'YYYY/MM/DD HH:mm:ss')
+  // })
 
   return res.json(polls)
 })
@@ -40,14 +35,14 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   //http://localhost:5500/polls/:id
   const id = req.params.id
-  const polls = await Polls.findAll({
-    raw: true,
+
+  const polls = await Polls.findOne({
     where: {
       id: id
     }
   })
+
   const votes = await Votes.findAll({
-    raw: true,
     where: { poll_id: id }
   })
 
@@ -56,22 +51,18 @@ router.get('/:id', async (req, res) => {
       poll_id: id
     }
   })
+
   const most_vote = await Votes.findAll({
-    raw: true,
     where: {
       total: max,
       poll_id: id
     }
   })
 
-  const promise = polls.map(poll => {
-    poll.end = date.format(poll.end, 'YYYY/MM/DD HH:mm:ss')
-    poll.start = date.format(poll.start, 'YYYY/MM/DD HH:mm:ss')
-  })
-  Promise.all(promise)
+  polls.dataValues.end = date.format(polls.dataValues.end, 'YYYY/MM/DD HH:mm:ss')
 
   let result = {};
-  result.polls = polls[0]
+  result.polls = polls.dataValues
   result.votes = votes
   result.most_vote = most_vote
   return res.json(result)
@@ -105,11 +96,11 @@ router.post("/", async (req, res) => {
     total_vote: total_vote,
     start: start,
     end: end,
-    status: '3'
+    status: ''
   })
-  for (let i = 0; i < total_vote; i++) {
+  for (let item of vote) {
     await Votes.create({
-      title: vote[i],
+      title: item,
       total: '0',
       poll_id: poll.id
     })
