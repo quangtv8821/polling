@@ -9,6 +9,7 @@
               <v-list-item-content>
                 <v-list-item-title v-text="item.title" />
                 <v-list-item-subtitle v-text="`Total vote:` + item.total_vote" />
+                <v-list-item-subtitle v-text="`Most vote:` + item.votes.title" />
               </v-list-item-content>
 
               <v-list-item-action>

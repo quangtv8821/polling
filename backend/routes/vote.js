@@ -4,6 +4,7 @@ const router = express.Router()
 const db = require("../models")
 const Votes = db.votes
 const IsVotes = db.is_votes
+const Users = db.users
 
 router.put('/increase', async (req, res) =>    {
     const vote_id = req.body.vote_id
@@ -17,8 +18,8 @@ router.put('/increase', async (req, res) =>    {
     const is_votes = await IsVotes.update(
         {status: '1',},
         {where: {
-            user_id: user_id,
-            vote_id: vote_id
+            userId: user_id,
+            voteId: vote_id
         }
     })
     return res.json({
@@ -37,8 +38,8 @@ router.put('/decrease', async (req, res) =>    {
     const is_votes = await IsVotes.update(
         {status: '0',},
         {where: {
-            user_id: user_id,
-            vote_id: vote_id
+            userId: user_id,
+            voteId: vote_id
         }
     })
     return res.json({
@@ -55,14 +56,14 @@ router.post('/', async (req, res) => {
     const is_votes = await IsVotes.findOne(
     {
         where: {
-            user_id: user_id,
-            vote_id: vote_id
+            userId: user_id,
+            voteId: vote_id
         }
     })
     if(is_votes === null ) {
         const createRow = await IsVotes.create({
-            user_id: user_id,
-            vote_id: vote_id,
+            userId: user_id,
+            voteId: vote_id,
             status: '0'
         })
         return res.json({
@@ -74,12 +75,32 @@ router.post('/', async (req, res) => {
     })
 })
 
+router.post('/get-user', async (req, res) => {
+    const vote_id = req.body.vote_id
+
+    const users = await Users.findAll({
+        include: {
+            model: IsVotes,
+            where: {
+                voteId: vote_id,
+                status: '1'
+            }
+        }
+    })
+
+    const result = users.map(item => ({
+        email: item.dataValues.email,
+    }))
+
+    return res.send(result)
+})
+
 router.get('/:id', async (req, res) => {
     const vote_id = req.params.id
     
     const votes = await Votes.findOne({
         where: {
-            id: vote_id
+            id: vote_id,
         }
     })
     return res.json({

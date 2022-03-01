@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
       email: email
     },
   })
-  console.log(result.dataValues.password);
+
   if (!result) {
     return res.json({
       message: "Wrong user information, please check again!"

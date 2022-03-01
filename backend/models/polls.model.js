@@ -1,3 +1,5 @@
+const { votes } = require(".");
+
 module.exports = (sequelize, Sequelize) => {
   const Polls = sequelize.define("polls", {
     title: {
@@ -14,7 +16,10 @@ module.exports = (sequelize, Sequelize) => {
     },
     status: {
       type: Sequelize.INTEGER
-    }
+    },
   });
+  Polls.associate = (models) => {
+    Polls.hasMany(models.Votes)
+  }
   return Polls;
 };

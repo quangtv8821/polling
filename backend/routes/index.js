@@ -1,34 +1,40 @@
 const express = require('express')
 const router = express.Router()
 const date = require('date-and-time')
-
 const db = require("../models")
 const Polls = db.polls
 const Votes = db.votes
+const Sequelize = require('sequelize')
 
 //status = 1 -> recent, 2-> ended, 3 -> upcoming
 
 //get polls by status
+
 router.get('/', async (req, res) => {
-  //http://localhost:5500/polls?status=3
   const status = req.query.status
 
   const polls = await Polls.findAll({
+    attributes: ["id","title","total_vote","end","start"],
     where: {
       status: status
-    }
-  })
-
-  for (let item of polls) {
-    item.dataValues.end = date.format(item.dataValues.end, 'YYYY/MM/DD HH:mm:ss')
-    item.dataValues.start = date.format(item.dataValues.start, 'YYYY/MM/DD HH:mm:ss')
-  }
-  // polls.map(item => {
-  //   date.format(item.dataValues.end, 'YYYY/MM/DD HH:mm:ss')
-  //   date.format(item.dataValues.start, 'YYYY/MM/DD HH:mm:ss')
-  // })
-
-  return res.json(polls)
+    },
+    group: ['votes.id'],
+    include: {
+      model: Votes,
+      attributes: ["title","total"],
+    },
+    order: [['votes','total', 'desc']]
+  });
+  
+  const result = polls.map(item => ({
+    id: item.dataValues.id,
+    title: item.dataValues.title,
+    total_vote: item.dataValues.total_vote,
+    start: date.format(item.dataValues.start, 'YYYY/MM/DD HH:mm:ss'),
+    end: date.format(item.dataValues.end, 'YYYY/MM/DD HH:mm:ss'),
+    votes: item.votes[0].dataValues
+  }))
+  return res.json(result)
 })
 
 //get polls information by id
@@ -43,19 +49,19 @@ router.get('/:id', async (req, res) => {
   })
 
   const votes = await Votes.findAll({
-    where: { poll_id: id }
+    where: { pollId: id }
   })
 
   const max = await Votes.max('total', {
     where: {
-      poll_id: id
+      pollId: id
     }
   })
 
   const most_vote = await Votes.findAll({
     where: {
       total: max,
-      poll_id: id
+      pollId: id
     }
   })
 
@@ -102,7 +108,7 @@ router.post("/", async (req, res) => {
     await Votes.create({
       title: item,
       total: '0',
-      poll_id: poll.id
+      pollId: poll.id
     })
   }
 
@@ -115,7 +121,6 @@ router.post("/", async (req, res) => {
 //delete polls by change poll status to 4
 router.delete("/:id", async (req, res) => {
   const poll_id = req.params.id
-  console.log(poll_id);
   try {
     const poll = await Polls.update(
       { status: '4' },

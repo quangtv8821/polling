@@ -12,7 +12,12 @@
     <v-card-actions>
       <v-list color="main" two-line flat width="1200" class="mt-8">
         <v-list-item-group multiple>
-          <v-list-item v-for="(item, index) in votes" :key="item.choice">
+          <v-list-item
+            v-for="(item, index) in votes"
+            :key="item.choice"
+            @click="getUser(item.id)"
+          >
+
             <template>
               <v-list-item-action>
                 <v-checkbox
@@ -43,6 +48,7 @@
 <script>
 import { io } from "socket.io-client";
 import axios from "axios";
+import Swal from 'sweetalert2'
 export default {
   data() {
     return {
@@ -54,23 +60,25 @@ export default {
   },
   computed: {
     user() {
-      return this.$auth.$storage.getLocalStorage('user')
+      return this.$auth.$storage.getLocalStorage("user");
     },
   },
   created() {
-    this.connectToServer()
+    this.connectToServer();
   },
   mounted() {
-    this.getData()
+    this.getData();
   },
   methods: {
     async getData() {
-      const res = await axios.get(`http://localhost:5500/polls/${this.$route.query.id}`)
+      const res = await axios.get(
+        `http://localhost:5500/polls/${this.$route.query.id}`
+      );
 
-      this.poll = res.data.polls
-      this.votes = res.data.votes
-      this.mapStatusVote()
-      this.socket.emit("data", this.votes)
+      this.poll = res.data.polls;
+      this.votes = res.data.votes;
+      this.mapStatusVote();
+      this.socket.emit("data", this.votes);
     },
     async changeVote(id, value) {
       if (value == 1) {
@@ -85,9 +93,7 @@ export default {
           user_id: this.user.id,
         });
       }
-      Promise.all([
-        this.getData()
-      ])
+      Promise.all([this.getData()]);
     },
     async mapStatusVote() {
       const data = await Promise.all(
@@ -102,14 +108,25 @@ export default {
       });
     },
     async getTotalVote(id) {
-      const total = await axios.get(`http://localhost:5500/vote/${id}`)
-      return total.data.total
+      const total = await axios.get(`http://localhost:5500/vote/${id}`);
+      return total.data.total;
+    },
+    async getUser(id) {
+      const response = await axios.post(`http://localhost:5500/vote/get-user`, {
+        vote_id: id,
+      });
+      Swal.fire({
+        title: "Voted user",
+        html: response.data
+          .map(item => `<div>${item.email}</div>`)
+          .join('')
+      })
     },
     connectToServer() {
       this.socket = io.connect(`http://localhost:5500/`, { secure: true });
-      this.socket.on('data', msg => {
-        this.votes = msg
-      })
+      this.socket.on("data", (msg) => {
+        this.votes = msg;
+      });
     },
   },
 };

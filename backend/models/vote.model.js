@@ -6,9 +6,12 @@ module.exports = (sequelize, Sequelize) => {
     total: {
       type: Sequelize.INTEGER
     },
-    poll_id: {
+    pollId: {
       type: Sequelize.INTEGER
-    }
+    },
   });
+  Votes.associate = (models) => {
+    Votes.belongsTo(models.Polls)
+  }
   return Votes;
 };

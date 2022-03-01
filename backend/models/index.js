@@ -10,7 +10,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     acquire: dbConfig.pool.acquire,
     idle: dbConfig.pool.idle
   },
-  logging: dbConfig.logging //disable logging
+  // logging: dbConfig.logging //disable logging
 });
 const db = {};
 db.Sequelize = Sequelize;
@@ -20,6 +20,18 @@ db.polls = require("./polls.model.js")(sequelize, Sequelize)
 db.users = require("./user.model.js")(sequelize, Sequelize)
 db.votes = require("./vote.model.js")(sequelize, Sequelize)
 db.is_votes = require("./is_vote.model.js")(sequelize, Sequelize)
+
+//set 1 polls has many votes
+db.polls.hasMany(db.votes)
+db.votes.belongsTo(db.polls)
+
+//set 1 user has many is_votes
+db.users.hasMany(db.is_votes)
+db.is_votes.belongsTo(db.users)
+
+//set 1 votes has many is_votes
+db.votes.hasMany(db.is_votes)
+db.is_votes.belongsTo(db.votes)
 
 const connection = async () => {
   try {
