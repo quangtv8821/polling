@@ -39,6 +39,19 @@
           LOGIN
         </v-btn>
 
+        <v-btn
+          class="mb-2"
+          fab
+          dark
+          small
+          color="#EA4335"
+          href="http://localhost:5500/login/google"
+        >
+          <v-icon> mdi-gmail </v-icon>
+        </v-btn>
+
+        <br />
+
         <NuxtLink
           color="white"
           class="mr-4 red--text"
@@ -75,9 +88,14 @@ export default {
       this.$store.dispatch("user/login", this.user);
     },
     validEmail(email) {
-      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      var re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
+    async loginWithGoogle() {
+      await this.$auth.loginWith('google')
+      console.log('123');
+    }
   },
 };
 </script>

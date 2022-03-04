@@ -2,7 +2,6 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const router = express.Router()
-const sequelize = require('sequelize')
 
 const db = require("../models")
 const Users = db.users

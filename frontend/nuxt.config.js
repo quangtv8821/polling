@@ -64,7 +64,13 @@ export default {
           user: { url: '/user', method: 'get' },
           logout: false
         }
-      }
+      },
+      google: {
+        clientId: '1042865742065-liqo4adagllo9ca9e49ooe78oren08s8.apps.googleusercontent.com',
+        codeChallengeMethod: '',
+        responseType: 'token id_token',
+        scope: ['profile', 'email'],
+      },
     }
   },
 

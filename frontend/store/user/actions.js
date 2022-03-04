@@ -55,5 +55,13 @@ export default {
     if (login.data.message === 'Unauthorized!') {
       this.$router.push("/login")
     }
+  },
+  async loginWithGoogle({commit}) {
+    try {
+      await this.$auth.loginWith("google")
+      this.$router.push('/')
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
